@@ -1,0 +1,38 @@
+{% extends 'admin/base_admin.html' %}
+{% from 'partials/macros.html' import status_pill with context %}
+{% block title %}{{ _('Itineraries') }} · Admin{% endblock %}
+{% block page_title %}{{ _('Itineraries') }}{% endblock %}
+{% block admin_content %}
+<div class="toolbar">
+  <div class="tabs" style="border:0">
+    <a href="{{ url_for('admin.itineraries') }}" class="{{ 'active' if not status }}">{{ _('All') }} ({{ counts.values()|sum }})</a>
+    {% for s in ['generated', 'saved', 'upcoming', 'completed', 'cancelled'] %}<a href="{{ url_for('admin.itineraries', status=s) }}" class="{{ 'active' if status == s }}">{{ _(s|capitalize) }} ({{ counts.get(s, 0) }})</a>{% endfor %}
+  </div>
+  <a class="btn btn-light" style="margin-left:auto" href="{{ url_for('admin.export_csv', kind='itineraries') }}"><i data-lucide="file-down"></i>{{ _('Export CSV') }}</a>
+</div>
+<div class="card table-wrap">
+  <table class="table">
+    <thead><tr><th>#</th><th>{{ _('Trip') }}</th><th>{{ _('User') }}</th><th>{{ _('From') }}</th><th>{{ _('Days') }}</th><th>{{ _('People') }}</th><th>{{ _('Style') }}</th><th>{{ _('Budget') }}</th><th>{{ _('Estimated cost') }}</th><th>{{ _('Source') }}</th><th>{{ _('Created') }}</th><th>{{ _('Status') }}</th><th></th></tr></thead>
+    <tbody>
+      {% for t in pagination.items %}
+      <tr>
+        <td class="muted">{{ t.id }}</td>
+        <td><a href="{{ url_for('account.trip_detail', trip_id=t.id) }}"><b>{{ t.title }}</b></a></td>
+        <td>{{ t.user.name if t.user else _('Guest') }}</td><td>{{ t.start_city }}</td><td>{{ t.days }}</td><td>{{ t.travelers }}</td>
+        <td>{{ t.style }}</td><td>{{ '₹' ~ (t.budget|money) if t.budget else '—' }}</td><td><b>₹{{ t.total_cost|money }}</b></td>
+        <td><span class="pill grey">{{ t.source }}</span></td><td class="nowrap">{{ t.created_at|dt }}</td><td>{{ status_pill(t.status) }}</td>
+        <td class="nowrap"><a class="btn btn-light btn-sm" href="{{ url_for('account.trip_pdf', trip_id=t.id) }}" title="PDF"><i data-lucide="download"></i></a>
+          <form class="inline-form" method="post" action="{{ url_for('admin.itinerary_delete', trip_id=t.id) }}" data-confirm="{{ _('Delete this itinerary?') }}"><button class="btn btn-danger btn-sm"><i data-lucide="trash-2"></i></button></form></td>
+      </tr>
+      {% else %}<tr><td colspan="13" class="center muted">{{ _('No itineraries.') }}</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% if pagination.pages > 1 %}
+<nav class="pagination">
+  {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+    {% if p %}{% if p == pagination.page %}<span class="current">{{ p }}</span>{% else %}<a href="{{ url_for('admin.itineraries', page=p, status=status) }}">{{ p }}</a>{% endif %}{% else %}<span style="border:0;background:none">…</span>{% endif %}
+  {% endfor %}
+</nav>
+{% endif %}
+{% endblock %}

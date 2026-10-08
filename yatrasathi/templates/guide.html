@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% from 'partials/macros.html' import place_img with context %}
+{% block title %}{{ _('Travel Guide') }} · YatraSathi{% endblock %}
+{% block content %}
+{% macro tr(obj, key) -%}{{ obj[key + '_' + lang] if lang != 'en' and obj.get(key + '_' + lang) else obj[key] }}{%- endmacro %}
+{% set colors = {'about': ('#eef2ff', '#3b36d1'), 'festivals': ('#f3e8ff', '#7c3aed'), 'cuisine': ('#fff4e5', '#ea580c'), 'culture': ('#e0f2fe', '#0369a1'),
+                 'transportation': ('#e0e7ff', '#2563eb'), 'weather': ('#e0f2fe', '#0284c7'), 'safety': ('#dcfce7', '#16a34a'), 'essentials': ('#f3e8ff', '#9333ea')} %}
+<div class="container page">
+  <div class="guide-layout">
+    <aside>
+      <nav class="card side-nav">
+        <h4>{{ _('Travel Guide') }}</h4>
+        <a href="{{ url_for('main.guide') }}" class="{{ 'active' if not section }}"><i data-lucide="home"></i>{{ _('Overview') }}</a>
+        {% for s in kb.sections %}
+        <a href="{{ url_for('main.guide', section=s.slug) }}" class="{{ 'active' if section == s.slug }}"><i data-lucide="{{ s.icon }}"></i>{{ tr(s, 'title') }}</a>
+        {% endfor %}
+        <a href="{{ url_for('main.guide', section='emergency') }}" class="{{ 'active' if section == 'emergency' }}"><i data-lucide="phone-call"></i>{{ _('Emergency Contacts') }}</a>
+        <a href="{{ url_for('main.guide', section='faqs') }}" class="{{ 'active' if section == 'faqs' }}"><i data-lucide="circle-help"></i>{{ _('FAQs') }}</a>
+        <a href="{{ url_for('main.help_page') }}"><i data-lucide="headphones"></i>{{ _('Help & Support') }}</a>
+      </nav>
+      {% set mp = highlights|selectattr('slug', 'equalto', 'mysore-palace')|first %}
+      <div class="card mt-2" style="overflow:hidden">
+        {% if mp %}{{ place_img(mp, '') }}{% endif %}
+        <div class="card-body"><h3 style="color:var(--primary)">{{ _('Incredible Karnataka') }}</h3><p class="small muted mb-0">{{ _('One state. Endless experiences. Timeless memories.') }}</p></div>
+      </div>
+    </aside>
+
+    <section>
+      {% if not section %}
+      <div class="card about-hero">
+        <div class="card-body">
+          <h1 style="font-size:1.6rem">{{ _('About Karnataka') }}</h1>
+          <p class="muted">{{ tr(kb.sections[0], 'summary') }}</p>
+          <div class="stat-tiles">
+            <div class="stat-tile"><i data-lucide="map-pin"></i><b>{{ district_count }}</b><span>{{ _('Districts') }}</span></div>
+            <div class="stat-tile"><i data-lucide="landmark"></i><b>3</b><span>{{ _('UNESCO Sites') }}</span></div>
+            <div class="stat-tile"><i data-lucide="leaf"></i><b>{{ place_count }}+</b><span>{{ _('Places in YatraSathi') }}</span></div>
+            <div class="stat-tile"><i data-lucide="languages"></i><b>3</b><span>{{ _('Languages') }}</span></div>
+          </div>
+          <a class="btn btn-primary btn-sm mt-2" href="{{ url_for('main.guide', section='about') }}">{{ _('Know More') }} <i data-lucide="arrow-right"></i></a>
+        </div>
+        {% set hero = highlights|selectattr('slug', 'equalto', 'hampi')|first %}
+        {% if hero %}{{ place_img(hero, '') }}{% endif %}
+      </div>
+
+      <h2 class="mt-3">{{ _('Explore Karnataka') }}</h2>
+      <div class="grid grid-4" style="gap:14px">
+        {% for s in kb.sections %}
+        <a class="card guide-card" href="{{ url_for('main.guide', section=s.slug) }}">
+          <div class="gi" style="background:{{ colors[s.slug][0] }};color:{{ colors[s.slug][1] }}"><i data-lucide="{{ s.icon }}"></i></div>
+          <div><b>{{ tr(s, 'title') }}</b><p class="small muted mb-1">{{ tr(s, 'summary') }}</p><span class="link-sm">{{ _('Explore') }} <i data-lucide="arrow-right"></i></span></div>
+        </a>
+        {% endfor %}
+      </div>
+
+      <div class="row between mt-3"><h2 class="mb-0">{{ _('Frequently Asked Questions') }}</h2><a class="link-sm" href="{{ url_for('main.guide', section='faqs') }}">{{ _('View all FAQs') }} <i data-lucide="arrow-right"></i></a></div>
+      <div class="grid grid-2 faq mt-1" style="gap:0 14px">
+        {% for f in kb.faqs[:4] %}<details><summary>{{ tr(f, 'q') }}</summary><p>{{ tr(f, 'a') }}</p></details>{% endfor %}
+      </div>
+
+      {% elif section == 'faqs' %}
+      <div class="card card-body faq">
+        <h1 style="font-size:1.6rem">{{ _('Frequently Asked Questions') }}</h1>
+        {% for f in kb.faqs %}<details {{ 'open' if loop.first }}><summary>{{ tr(f, 'q') }}</summary><p>{{ tr(f, 'a') }}</p></details>{% endfor %}
+      </div>
+
+      {% elif section == 'emergency' %}
+      <div class="card card-body">
+        <h1 style="font-size:1.6rem">{{ _('Emergency Contacts') }}</h1>
+        <p class="muted">{{ _('Save these numbers before you travel. All numbers are toll-free from any phone in India.') }}</p>
+        <div class="grid grid-2">
+          {% for e in kb.emergency %}
+          <a class="attraction" href="tel:{{ e.number }}"><span class="num"><i data-lucide="{{ e.icon }}" style="width:16px;height:16px"></i></span><span class="flex-1">{{ tr(e, 'name') }}</span><b style="font-size:1.2rem">{{ e.number }}</b></a>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% else %}
+      <div class="card card-body section-content">
+        <div class="row"><div class="gi guide-card" style="padding:0"><div class="gi" style="background:{{ colors[current.slug][0] }};color:{{ colors[current.slug][1] }}"><i data-lucide="{{ current.icon }}"></i></div></div>
+          <div><h1 style="font-size:1.6rem" class="mb-0">{{ tr(current, 'title') }}</h1><div class="muted">{{ tr(current, 'summary') }}</div></div></div>
+        {% if lang != 'en' %}<p class="xs muted mt-2">{{ _('Detailed guide content is shown in English. Ask the AI assistant to explain any topic in your language.') }}</p>{% endif %}
+        <div id="guide-text">
+        {% for item in current.content %}
+        <div class="item"><h3>{{ item.heading }}</h3><p class="mb-0">{{ item.text }}</p></div>
+        {% endfor %}
+        </div>
+        <div class="row wrap mt-2">
+          <button class="btn btn-light" data-speak="#guide-text" data-lang="en"><i data-lucide="volume-2"></i>{{ _('Listen') }}</button>
+          <a class="btn btn-primary" href="{{ url_for('main.assistant', q=tr(current, 'title')) }}"><i data-lucide="bot"></i>{{ _('Ask AI about this') }}</a>
+        </div>
+      </div>
+      {% endif %}
+    </section>
+
+    <aside class="right-col">
+      <div class="card card-body">
+        <h3>{{ _('Emergency Contacts') }}</h3>
+        {% for e in kb.emergency[1:6] %}
+        <div class="emergency-row" style="border-bottom:1px solid var(--border);padding-bottom:10px"><span><i data-lucide="{{ e.icon }}" style="color:var(--primary)"></i>{{ tr(e, 'name') }}</span><b>{{ e.number }}</b></div>
+        {% endfor %}
+      </div>
+      <div class="card card-body mt-2">
+        <div class="row" style="align-items:flex-start"><i data-lucide="info" style="color:#fff;background:var(--primary);border-radius:50%;padding:3px;width:24px;height:24px"></i>
+          <div><h3 class="mb-0">{{ _('Travel Advisory') }}</h3><p class="small muted">{{ _('Stay updated with the latest travel advisories and guidelines.') }}</p>
+            <a class="link-sm" href="{{ url_for('main.guide', section='safety') }}">{{ _('View Updates') }} <i data-lucide="arrow-right"></i></a></div></div>
+      </div>
+      <div class="card card-body mt-2">
+        <div class="row" style="align-items:flex-start"><i data-lucide="headphones" style="color:var(--primary)"></i>
+          <div><h3 class="mb-0">{{ _('Need Help?') }}</h3><p class="small muted">{{ _('Our support team is here to assist you.') }}</p>
+            <a class="btn btn-outline btn-sm" href="{{ url_for('main.help_page') }}#contact">{{ _('Contact Support') }}</a></div></div>
+      </div>
+      <div class="card card-body mt-2">
+        <div class="row" style="align-items:flex-start"><i data-lucide="file-text" style="color:var(--primary)"></i>
+          <div><h3 class="mb-0">{{ _('Karnataka Brochure') }}</h3><p class="small muted">{{ _('Download a PDF of all destinations in YatraSathi.') }}</p>
+            <a class="btn btn-outline btn-sm" href="{{ url_for('api.brochure') }}"><i data-lucide="download"></i>{{ _('Download PDF') }}</a></div></div>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}

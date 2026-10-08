@@ -1,0 +1,14 @@
+[
+  {"key": "heritage-trail", "title": "Heritage Trail", "title_kn": "ಪರಂಪರೆಯ ಹಾದಿ", "title_hi": "विरासत यात्रा",
+   "days": 5, "price_from": 12999, "image_slug": "hampi",
+   "params": {"start": "Bangalore", "destination": "hampi", "days": 5, "travelers": 2, "interests": ["Heritage"], "style": "standard"}},
+  {"key": "coorg-getaway", "title": "Coorg Getaway", "title_kn": "ಕೊಡಗು ವಿಹಾರ", "title_hi": "कूर्ग गेटअवे",
+   "days": 3, "price_from": 8999, "image_slug": "abbey-falls",
+   "params": {"start": "Bangalore", "destination": "coorg", "days": 3, "travelers": 2, "interests": ["Nature", "Relaxation"], "style": "standard"}},
+  {"key": "beach-escape", "title": "Beach Escape", "title_kn": "ಕಡಲತೀರದ ವಿಹಾರ", "title_hi": "बीच एस्केप",
+   "days": 4, "price_from": 10999, "image_slug": "gokarna",
+   "params": {"start": "Bangalore", "destination": "gokarna", "days": 4, "travelers": 2, "interests": ["Beaches", "Relaxation"], "style": "standard"}},
+  {"key": "temples-of-karnataka", "title": "Temples of Karnataka", "title_kn": "ಕರ್ನಾಟಕದ ದೇವಾಲಯಗಳು", "title_hi": "कर्नाटक के मंदिर",
+   "days": 6, "price_from": 15999, "image_slug": "udupi-krishna-temple",
+   "params": {"start": "Bangalore", "destination": "udupi-krishna-temple", "days": 6, "travelers": 2, "interests": ["Spiritual", "Heritage"], "style": "standard"}}
+]

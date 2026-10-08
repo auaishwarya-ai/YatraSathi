@@ -1,0 +1,56 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="{{ url_for('main.index') }}">
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="">
+          <div><div class="brand-name">YatraSathi</div><div class="brand-sub">{{ _('Your AI Travel Companion') }}</div></div>
+        </a>
+        <p class="small mt-2">{{ _('Explore Karnataka like never before with AI-powered travel guidance in your preferred language.') }}</p>
+        <div class="socials">
+          <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+          <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+          <a href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>{{ _('Quick Links') }}</h4>
+        <ul>
+          <li><a href="{{ url_for('main.index') }}">{{ _('Home') }}</a></li>
+          <li><a href="{{ url_for('main.explore') }}">{{ _('Explore Karnataka') }}</a></li>
+          <li><a href="{{ url_for('main.planner') }}">{{ _('AI Trip Planner') }}</a></li>
+          <li><a href="{{ url_for('main.guide') }}">{{ _('Travel Guide') }}</a></li>
+          <li><a href="{{ url_for('account.dashboard') }}">{{ _('My Account') }}</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>{{ _('Useful Links') }}</h4>
+        <ul>
+          <li><a href="{{ url_for('main.guide', section='about') }}">{{ _('About Karnataka') }}</a></li>
+          <li><a href="{{ url_for('main.guide', section='festivals') }}">{{ _('Festivals') }}</a></li>
+          <li><a href="{{ url_for('main.guide', section='transportation') }}">{{ _('Transportation') }}</a></li>
+          <li><a href="{{ url_for('main.guide', section='weather') }}">{{ _('Weather') }}</a></li>
+          <li><a href="{{ url_for('main.nearby') }}">{{ _('Nearby Places') }}</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>{{ _('Support') }}</h4>
+        <ul>
+          <li><a href="{{ url_for('main.help_page') }}">{{ _('Help & FAQs') }}</a></li>
+          <li><a href="{{ url_for('main.help_page') }}#contact">{{ _('Contact Support') }}</a></li>
+          <li><a href="{{ url_for('main.help_page') }}#contact">{{ _('Feedback') }}</a></li>
+          <li><a href="{{ url_for('main.guide', section='safety') }}">{{ _('Safety Tips') }}</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>{{ _('Emergency Contacts') }}</h4>
+        <div class="emergency-row"><span><i data-lucide="shield"></i>{{ _('Police') }}</span><b>100</b></div>
+        <div class="emergency-row"><span><i data-lucide="cross"></i>{{ _('Ambulance') }}</span><b>108</b></div>
+        <div class="emergency-row"><span><i data-lucide="phone"></i>{{ _('Tourist Helpline') }}</span><b>1363</b></div>
+        <div class="emergency-row"><span><i data-lucide="siren"></i>{{ _('All Emergencies') }}</span><b>112</b></div>
+      </div>
+    </div>
+    <div class="copyright">© {{ now.year }} YatraSathi. {{ _('All rights reserved.') }} · {{ _('Costs and timings shown are estimates.') }}</div>
+  </div>
+</footer>

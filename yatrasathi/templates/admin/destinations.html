@@ -1,0 +1,40 @@
+{% extends 'admin/base_admin.html' %}
+{% from 'partials/macros.html' import place_img with context %}
+{% block title %}{{ _('Destinations') }} · Admin{% endblock %}
+{% block page_title %}{{ _('Destinations') }}{% endblock %}
+{% block admin_content %}
+<div class="toolbar">
+  <form class="row wrap" method="get">
+    <input class="input" style="width:260px" name="q" value="{{ q }}" placeholder="{{ _('Search name, district, tag...') }}">
+    <select class="select" style="width:200px" name="category" onchange="this.form.submit()">
+      <option value="">{{ _('All categories') }}</option>
+      {% for c in categories %}<option value="{{ c }}" {{ 'selected' if c == category }}>{{ c }} ({{ counts.get(c, 0) }})</option>{% endfor %}
+    </select>
+    <button class="btn btn-light"><i data-lucide="search"></i>{{ _('Search') }}</button>
+  </form>
+  <a class="btn btn-primary" style="margin-left:auto" href="{{ url_for('admin.destination_form') }}"><i data-lucide="plus"></i>{{ _('Add Destination') }}</a>
+</div>
+<div class="card table-wrap">
+  <table class="table">
+    <thead><tr><th></th><th>{{ _('Name') }}</th><th>{{ _('District') }}</th><th>{{ _('Category') }}</th><th>{{ _('Rating') }}</th><th>{{ _('Views') }}</th><th>{{ _('Entry Fee') }}</th><th>{{ _('Status') }}</th><th></th></tr></thead>
+    <tbody>
+      {% for d in items %}
+      <tr>
+        <td>{{ place_img(d, 'thumb') }}</td>
+        <td><a href="{{ url_for('main.place', slug=d.slug) }}" target="_blank"><b>{{ d.name }}</b></a><div class="xs muted">{{ d.name_kn }} · {{ d.name_hi }}</div></td>
+        <td>{{ d.district }}</td><td><span class="pill">{{ d.category }}</span></td>
+        <td>⭐ {{ d.rating }} <span class="xs muted">({{ d.reviews }})</span></td><td>{{ '{:,}'.format(d.views) }}</td>
+        <td>{% if d.entry_fee_indian %}₹{{ d.entry_fee_indian }}{% else %}<span class="muted">{{ _('Free') }}</span>{% endif %}</td>
+        <td>{% if d.active %}<span class="pill green">{{ _('Visible') }}</span>{% else %}<span class="pill grey">{{ _('Hidden') }}</span>{% endif %}</td>
+        <td class="nowrap">
+          <a class="btn btn-light btn-sm" href="{{ url_for('admin.destination_form', dest_id=d.id) }}" title="{{ _('Edit') }}"><i data-lucide="pencil"></i></a>
+          <form class="inline-form" method="post" action="{{ url_for('admin.destination_toggle', dest_id=d.id) }}"><button class="btn btn-light btn-sm" title="{{ _('Show / hide') }}"><i data-lucide="{{ 'eye-off' if d.active else 'eye' }}"></i></button></form>
+          <form class="inline-form" method="post" action="{{ url_for('admin.destination_delete', dest_id=d.id) }}" data-confirm="{{ _('Delete this destination permanently?') }}"><button class="btn btn-danger btn-sm" title="{{ _('Delete') }}"><i data-lucide="trash-2"></i></button></form>
+        </td>
+      </tr>
+      {% else %}<tr><td colspan="9" class="center muted">{{ _('No destinations found.') }}</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="small muted mt-1">{{ items|length }} {{ _('destinations') }} · {{ _('Changes are applied to the AI recommendation and RAG index immediately.') }}</p>
+{% endblock %}

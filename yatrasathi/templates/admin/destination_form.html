@@ -1,0 +1,46 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}{{ _('Edit Destination') if d else _('Add Destination') }} · Admin{% endblock %}
+{% block page_title %}{{ _('Edit Destination') if d else _('Add Destination') }}{% endblock %}
+{% block admin_content %}
+<form class="card card-body" method="post" enctype="multipart/form-data">
+  <div class="grid grid-3">
+    <div class="field"><label class="lbl">{{ _('Name (English)') }} *</label><input class="input" name="name" required value="{{ vals.get('name', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Name (Kannada)') }}</label><input class="input" name="name_kn" value="{{ vals.get('name_kn', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Name (Hindi)') }}</label><input class="input" name="name_hi" value="{{ vals.get('name_hi', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('District') }}</label><input class="input" name="district" value="{{ vals.get('district', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Category') }}</label>
+      <select class="select" name="category">{% for c in categories %}<option {{ 'selected' if c == vals.get('category') }}>{{ c }}</option>{% endfor %}</select></div>
+    <div class="field"><label class="lbl">{{ _('Tags (comma separated)') }}</label><input class="input" name="tags" value="{{ vals.get('tags', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Latitude') }} *</label><input class="input" name="lat" required value="{{ vals.get('lat', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Longitude') }} *</label><input class="input" name="lng" required value="{{ vals.get('lng', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Rating (0-5)') }}</label><input class="input" type="number" step="0.1" min="0" max="5" name="rating" value="{{ vals.get('rating', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Entry fee - Indians (₹)') }}</label><input class="input" type="number" min="0" name="entry_fee_indian" value="{{ vals.get('entry_fee_indian', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Entry fee - Foreigners (₹)') }}</label><input class="input" type="number" min="0" name="entry_fee_foreign" value="{{ vals.get('entry_fee_foreign', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Timings') }}</label><input class="input" name="timings" value="{{ vals.get('timings', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Best months (from - to)') }}</label>
+      <div class="row"><input class="input" type="number" min="1" max="12" name="best_from" value="{{ vals.get('best_from', '') }}"><input class="input" type="number" min="1" max="12" name="best_to" value="{{ vals.get('best_to', '') }}"></div></div>
+    <div class="field"><label class="lbl">{{ _('Ideal days') }}</label><input class="input" type="number" min="1" max="5" name="ideal_days" value="{{ vals.get('ideal_days', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Cost index (1.0 = average)') }}</label><input class="input" type="number" step="0.05" min="0.5" max="2.5" name="cost_index" value="{{ vals.get('cost_index', '') }}"></div>
+  </div>
+  <div class="grid grid-2">
+    <div class="field"><label class="lbl">{{ _('Description') }}</label><textarea class="input" rows="4" name="description">{{ vals.get('description', '') }}</textarea></div>
+    <div class="field"><label class="lbl">{{ _('History / Story (used by storytelling mode)') }}</label><textarea class="input" rows="4" name="history">{{ vals.get('history', '') }}</textarea></div>
+    <div class="field"><label class="lbl">{{ _('Attractions (one per line)') }}</label><textarea class="input" rows="5" name="attractions">{{ vals.get('attractions', '') }}</textarea></div>
+    <div class="field"><label class="lbl">{{ _('Food to try (one per line)') }}</label><textarea class="input" rows="5" name="food">{{ vals.get('food', '') }}</textarea></div>
+    <div class="field"><label class="lbl">{{ _('How to reach') }}</label><textarea class="input" rows="3" name="how_to_reach">{{ vals.get('how_to_reach', '') }}</textarea></div>
+    <div class="field"><label class="lbl">{{ _('Travel tips') }}</label><textarea class="input" rows="3" name="tips">{{ vals.get('tips', '') }}</textarea></div>
+    <div class="field"><label class="lbl">{{ _('Summary in Kannada') }}</label><textarea class="input" rows="2" name="summary_kn">{{ vals.get('summary_kn', '') }}</textarea></div>
+    <div class="field"><label class="lbl">{{ _('Summary in Hindi') }}</label><textarea class="input" rows="2" name="summary_hi">{{ vals.get('summary_hi', '') }}</textarea></div>
+  </div>
+  <div class="grid grid-3">
+    <div class="field"><label class="lbl">{{ _('Wikipedia title (for photo)') }}</label><input class="input" name="wiki" value="{{ vals.get('wiki', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Image URL (optional)') }}</label><input class="input" name="image_url" value="{{ vals.get('image_url', '') }}"></div>
+    <div class="field"><label class="lbl">{{ _('Upload image (JPG/PNG/WEBP)') }}</label><input class="input" type="file" name="image" accept=".jpg,.jpeg,.png,.webp"></div>
+  </div>
+  <label class="check mb-2"><input type="checkbox" name="active" value="1" {{ 'checked' if vals.get('active') }}> {{ _('Visible on website') }}</label>
+  <div class="row">
+    <button class="btn btn-primary"><i data-lucide="save"></i>{{ _('Save Destination') }}</button>
+    <a class="btn btn-light" href="{{ url_for('admin.destinations') }}">{{ _('Cancel') }}</a>
+  </div>
+</form>
+{% endblock %}

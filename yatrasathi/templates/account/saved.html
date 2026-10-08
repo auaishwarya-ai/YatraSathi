@@ -1,0 +1,23 @@
+{% extends 'account/base_account.html' %}
+{% from 'partials/macros.html' import place_card with context %}
+{% block title %}{{ _('Saved Places') }} · YatraSathi{% endblock %}
+{% block account_content %}
+<section>
+  <div class="row between wrap mb-2">
+    <div><h2 class="mb-0">{{ _('Saved Places') }}</h2><div class="muted small">{{ items|length }} {{ _('places saved') }}</div></div>
+    <a class="btn btn-outline" href="{{ url_for('main.explore') }}"><i data-lucide="compass"></i>{{ _('Explore more') }}</a>
+  </div>
+  {% set saved_ids = items|map(attribute='destination_id')|list %}
+  <div class="explore-grid">
+    {% for s in items if s.destination %}{{ place_card(s.destination, saved_ids) }}{% else %}
+    <div class="card empty-state" style="grid-column:1/-1"><i data-lucide="heart"></i>{{ _('You have not saved any places yet. Tap the heart on any place to save it.') }}</div>
+    {% endfor %}
+  </div>
+  {% if items %}
+  <div class="card card-body mt-2 row between wrap">
+    <div><b>{{ _('Turn your saved places into a trip') }}</b><div class="small muted">{{ _('Your saved places personalise AI recommendations.') }}</div></div>
+    <a class="btn btn-primary" href="{{ url_for('main.assistant', q=_('Recommend me a destination')) }}"><i data-lucide="sparkles"></i>{{ _('Get recommendations') }}</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

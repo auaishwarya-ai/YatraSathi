@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% from 'partials/macros.html' import place_card, place_img, stars with context %}
+{% block title %}{{ _('Explore Karnataka') }} · YatraSathi{% endblock %}
+{% block content %}
+<div class="container page">
+  <div class="explore-layout">
+    <!-- Filters -->
+    <aside class="card card-body filter-panel">
+      <h4>{{ _('Filter Destinations') }}</h4>
+      <form method="get" action="{{ url_for('main.explore') }}" id="filter-form">
+        <div class="input-icon"><input class="input" name="q" value="{{ q }}" placeholder="{{ _('Search places, attractions...') }}"><i data-lucide="search"></i></div>
+        {% if category %}<input type="hidden" name="category" value="{{ category }}">{% endif %}
+        {% if min_rating %}<input type="hidden" name="rating" value="{{ min_rating }}">{% endif %}
+        <div class="filter-group">
+          <span class="lbl">{{ _('Categories') }}</span>
+          <div class="cat-filter">
+            {% set base_args = args.copy() %}{% set _x = base_args.pop('category', None) %}
+            <a href="{{ url_for('main.explore', **base_args) }}" class="{{ 'active' if not category }}"><i data-lucide="layout-grid"></i>{{ _('All') }}</a>
+            {% for cat, count in categories %}
+            <a href="{{ url_for('main.explore', category=cat, **base_args) }}" class="{{ 'active' if category == cat }}"><i data-lucide="{{ CATEGORY_ICONS[cat] }}"></i>{{ cat|category }}<span class="cnt">{{ count }}</span></a>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="filter-group">
+          <label class="lbl" for="district">{{ _('District') }}</label>
+          <select class="select" name="district" id="district" onchange="this.form.submit()">
+            <option value="">{{ _('All Districts') }}</option>
+            {% for dist in districts %}<option value="{{ dist }}" {{ 'selected' if dist == district }}>{{ dist }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="lbl" for="sort">{{ _('Sort By') }}</label>
+          <select class="select" name="sort" id="sort" onchange="this.form.submit()">
+            <option value="popularity" {{ 'selected' if sort == 'popularity' }}>{{ _('Popularity') }}</option>
+            <option value="rating" {{ 'selected' if sort == 'rating' }}>{{ _('Rating') }}</option>
+            <option value="name" {{ 'selected' if sort == 'name' }}>{{ _('Name (A-Z)') }}</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="lbl">{{ _('Ratings') }}</span>
+          {% set rargs = args.copy() %}{% set _x = rargs.pop('rating', None) %}
+          {% for r in [4.0, 4.5, 4.7] %}
+          <a class="rating-opt {{ 'active' if min_rating == r }}" href="{{ url_for('main.explore', rating=r, **rargs) }}"><span class="stars"><i data-lucide="star"></i></span>{{ r }} {{ _('& above') }}</a>
+          {% endfor %}
+        </div>
+        <a class="btn btn-outline btn-block mt-2" href="{{ url_for('main.explore') }}"><i data-lucide="rotate-ccw"></i>{{ _('Reset Filters') }}</a>
+      </form>
+    </aside>
+
+    <!-- Results -->
+    <section>
+      <div class="row between wrap mb-2">
+        <div><h1 style="font-size:1.6rem" class="mb-0">{{ _('Explore Karnataka') }}</h1>
+          <div class="muted small">{% if q %}{{ _('Results for') }} “{{ q }}”{% else %}{{ _('Discover amazing places across Karnataka') }}{% endif %}</div></div>
+        <div class="row">
+          <button class="btn btn-outline" id="toggle-map" type="button"><i data-lucide="map"></i><span>{{ _('View on Map') }}</span></button>
+          <b>{{ total }} {{ _('Places Found') }}</b>
+        </div>
+      </div>
+      <div id="grid-view">
+        {% if items %}
+        <div class="explore-grid">
+          {% for d in items %}{{ place_card(d, saved) }}{% endfor %}
+        </div>
+        {% else %}
+        <div class="card empty-state"><i data-lucide="search-x"></i>{{ _('No places match your filters.') }} <a href="{{ url_for('main.explore') }}">{{ _('Reset Filters') }}</a></div>
+        {% endif %}
+        {% if pages > 1 %}
+        <nav class="pagination">
+          {% if page > 1 %}<a href="{{ url_for('main.explore', page=page-1, **args) }}" aria-label="Previous"><i data-lucide="chevron-left"></i></a>{% else %}<span class="disabled"><i data-lucide="chevron-left"></i></span>{% endif %}
+          {% for p in range(1, pages + 1) %}
+            {% if p == page %}<span class="current">{{ p }}</span>
+            {% elif p <= 5 or p == pages or (p - page)|abs <= 1 %}<a href="{{ url_for('main.explore', page=p, **args) }}">{{ p }}</a>
+            {% elif p == 6 %}<span style="border:0;background:none">…</span>{% endif %}
+          {% endfor %}
+          {% if page < pages %}<a href="{{ url_for('main.explore', page=page+1, **args) }}" aria-label="Next"><i data-lucide="chevron-right"></i></a>{% else %}<span class="disabled"><i data-lucide="chevron-right"></i></span>{% endif %}
+        </nav>
+        {% endif %}
+      </div>
+      <div id="map-box" class="hidden"><div id="map-view" class="map-view"></div></div>
+    </section>
+
+    <!-- Preview -->
+    <div class="preview-col">
+      {% if selected %}
+      {% set d = selected %}
+      <aside class="card preview" id="preview">
+        <div class="img-wrap">
+          {{ place_img(d, 'preview-img', 'data-p=img') }}
+          <a href="{{ url_for('main.place', slug=d.slug) }}" data-p="link" class="icon-btn" style="position:absolute;left:14px;top:14px" aria-label="{{ _('Open') }}"><i data-lucide="chevron-left"></i></a>
+          <span class="img-badge"><i data-lucide="camera"></i>1 / {{ d.attractions_list|length + 1 }}</span>
+        </div>
+        <div class="card-body">
+          <div class="row between" style="align-items:flex-start">
+            <div><h2 class="mb-0" data-p="name" style="font-size:1.6rem">{{ place_name(d) }}</h2>
+              <div class="loc muted small row" style="gap:5px"><i data-lucide="map-pin"></i><span data-p="district">{{ d.district }}, Karnataka</span></div></div>
+            <span class="stars"><i data-lucide="star"></i><span data-p="rating">{{ d.rating }} ({{ '{:,}'.format(d.reviews) }} {{ _('reviews') }})</span></span>
+          </div>
+          <div class="tabs mt-2" data-tabs>
+            <button class="active" data-tab="pv-overview">{{ _('Overview') }}</button>
+            <button data-tab="pv-attr">{{ _('Attractions') }}</button>
+            <button data-tab="pv-reach">{{ _('How to Reach') }}</button>
+            <button data-tab="pv-food">{{ _('Food') }}</button>
+          </div>
+          <div class="tab-panel active mt-2" id="pv-overview">
+            <div class="grid grid-2" style="gap:14px;grid-template-columns:1.2fr 1fr">
+              <div>
+                <p class="small" data-p="summary">{{ d.localized_summary(lang) }}</p>
+                <div class="info-list">
+                  <div class="item"><i data-lucide="calendar-clock"></i><div><b>{{ _('Best time to visit') }}</b><span data-p="best">{{ d|month_range }}</span></div></div>
+                  <div class="item"><i data-lucide="clock"></i><div><b>{{ _('Timings') }}</b><span data-p="timings">{{ d.timings }}</span></div></div>
+                  <div class="item"><i data-lucide="ticket"></i><div><b>{{ _('Entry Fee') }}</b><span data-p="fee">{% if d.entry_fee_indian or d.entry_fee_foreign %}₹{{ d.entry_fee_indian }} {{ _('for Indians') }}<br>₹{{ d.entry_fee_foreign }} {{ _('for Foreigners') }}{% else %}{{ _('Free') }}{% endif %}</span></div></div>
+                </div>
+              </div>
+              <div>
+                <div class="mini-map" id="mini-map" data-lat="{{ d.lat }}" data-lng="{{ d.lng }}"></div>
+                <a class="btn btn-light btn-sm btn-block mt-1" data-p="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query={{ d.lat }},{{ d.lng }}"><i data-lucide="map"></i>{{ _('View on Map') }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="tab-panel mt-2" id="pv-attr"><ul class="small" data-p="attractions">{% for a in d.attractions_list %}<li>{{ a }}</li>{% endfor %}</ul></div>
+          <div class="tab-panel mt-2" id="pv-reach"><p class="small" data-p="reach">{{ d.how_to_reach }}</p></div>
+          <div class="tab-panel mt-2" id="pv-food"><ul class="small" data-p="food">{% for f in d.food_list %}<li>{{ f }}</li>{% endfor %}</ul></div>
+          <div class="row mt-2">
+            <a class="btn btn-primary flex-1" data-p="ask" href="{{ url_for('main.assistant', place=d.slug) }}"><i data-lucide="bot"></i>{{ _('Ask AI about this place') }}</a>
+            <button class="btn btn-outline flex-1 heart-inline{{ ' saved' if d.id in saved }}" data-fav="{{ d.slug }}"><i data-lucide="heart"></i><span class="fav-label">{{ _('Saved') if d.id in saved else _('Add to Favorites') }}</span></button>
+          </div>
+          <div class="row mt-1">
+            <a class="btn btn-light btn-sm flex-1" data-p="plan" href="{{ url_for('main.planner', destination=d.slug, days=d.ideal_days) }}"><i data-lucide="calendar-plus"></i>{{ _('Plan a trip here') }}</a>
+            <a class="btn btn-light btn-sm flex-1" data-p="link" href="{{ url_for('main.place', slug=d.slug) }}"><i data-lucide="info"></i>{{ _('Full details') }}</a>
+          </div>
+        </div>
+      </aside>
+      {% endif %}
+    </div>
+  </div>
+
+  <section class="card features-strip">
+    <div class="f"><div class="ic"><i data-lucide="info"></i></div><div><b>{{ _('Detailed Information') }}</b><span>{{ _('History, culture & more') }}</span></div></div>
+    <div class="f"><div class="ic"><i data-lucide="bot"></i></div><div><b>{{ _('AI Assistant') }}</b><span>{{ _('Ask anything about places') }}</span></div></div>
+    <div class="f"><div class="ic"><i data-lucide="map-pinned"></i></div><div><b><a href="{{ url_for('main.nearby') }}">{{ _('Nearby Places') }}</a></b><span>{{ _('Find attractions around you') }}</span></div></div>
+    <div class="f"><div class="ic"><i data-lucide="hotel"></i></div><div><b>{{ _('Stay & Budget') }}</b><span>{{ _('Estimated costs for every trip') }}</span></div></div>
+    <div class="f"><div class="ic"><i data-lucide="calendar-check"></i></div><div><b>{{ _('Save & Plan') }}</b><span>{{ _('Add to trip or favorites') }}</span></div></div>
+  </section>
+</div>
+<script id="map-points" type="application/json">{{ map_points|tojson }}</script>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/explore.js') }}"></script>{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container page">
+  <div class="account-layout {% block layout_class %}two{% endblock %}">
+    <aside>
+      <nav class="card side-menu">
+        <a href="{{ url_for('account.dashboard') }}" class="{{ 'active' if active == 'dashboard' }}"><i data-lucide="home"></i>{{ _('Dashboard') }}</a>
+        <div class="grp">{{ _('User Panel') }}</div>
+        <a href="{{ url_for('account.trips') }}" class="{{ 'active' if active == 'trips' }}"><i data-lucide="briefcase"></i>{{ _('My Trips') }}</a>
+        <a href="{{ url_for('account.saved') }}" class="{{ 'active' if active == 'saved' }}"><i data-lucide="heart"></i>{{ _('Saved Places') }}</a>
+        <a href="{{ url_for('account.chats') }}" class="{{ 'active' if active == 'chats' }}"><i data-lucide="message-square"></i>{{ _('Chat History') }}</a>
+        <a href="{{ url_for('main.nearby') }}"><i data-lucide="map-pinned"></i>{{ _('Nearby Places') }}</a>
+        <div class="grp">{{ _('Preferences') }}</div>
+        <a href="{{ url_for('account.profile', section='language') }}" class="{{ 'active' if active == 'language' }}"><i data-lucide="globe"></i>{{ _('Language Preferences') }}</a>
+        <a href="{{ url_for('account.profile') }}" class="{{ 'active' if active in ('profile', 'password', 'privacy') }}"><i data-lucide="user"></i>{{ _('Profile Settings') }}</a>
+        <div class="grp">{{ _('Support') }}</div>
+        <a href="{{ url_for('main.help_page') }}"><i data-lucide="circle-help"></i>{{ _('Help & FAQs') }}</a>
+        <a href="{{ url_for('main.help_page') }}#contact"><i data-lucide="headphones"></i>{{ _('Contact Support') }}</a>
+        <a href="{{ url_for('main.help_page') }}#contact"><i data-lucide="message-square-text"></i>{{ _('Feedback') }}</a>
+      </nav>
+      <div class="app-promo">
+        <b>{{ _('Take YatraSathi Everywhere!') }}</b>
+        <p class="small" style="color:#c9d1f3">{{ _('Install the web app on your phone: open YatraSathi in your browser and choose “Add to Home screen”.') }}</p>
+        <a class="store-btn" href="{{ url_for('main.planner') }}"><i data-lucide="smartphone"></i>{{ _('Works on mobile browsers') }}</a>
+      </div>
+    </aside>
+    {% block account_content %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

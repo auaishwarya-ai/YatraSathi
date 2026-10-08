@@ -1,0 +1,53 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}{{ _('Chat Sessions') }} · Admin{% endblock %}
+{% block page_title %}{{ _('Chat Sessions') }}{% endblock %}
+{% block admin_content %}
+<div class="toolbar">
+  <div class="tabs" style="border:0">
+    <a href="{{ url_for('admin.chats') }}" class="{{ 'active' if not lang }}">{{ _('All') }}</a>
+    {% for c, l in [('en', 'English'), ('kn', 'ಕನ್ನಡ'), ('hi', 'हिंदी')] %}<a href="{{ url_for('admin.chats', lang=c) }}" class="{{ 'active' if lang == c }}">{{ l }}</a>{% endfor %}
+  </div>
+</div>
+<div class="grid" style="grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:start" id="chat-grid">
+  <div>
+    <div class="card table-wrap">
+      <table class="table">
+        <thead><tr><th>{{ _('Conversation') }}</th><th>{{ _('User') }}</th><th>{{ _('Language') }}</th><th>{{ _('Messages') }}</th><th>{{ _('Updated') }}</th><th></th></tr></thead>
+        <tbody>
+          {% for s in pagination.items %}
+          <tr class="{{ 'selected' if selected and selected.id == s.id }}">
+            <td><a href="{{ url_for('admin.chats', view=s.id, page=pagination.page, lang=lang) }}"><b>{{ s.title }}</b></a></td>
+            <td>{{ s.user.name if s.user else _('Guest') }}</td><td>{{ {'en': 'EN', 'kn': 'ಕನ್ನಡ', 'hi': 'हिंदी'}[s.language] }}</td>
+            <td>{{ msg_counts.get(s.id, 0) }}</td><td class="nowrap">{{ s.updated_at|dt('%d %b, %H:%M') }}</td>
+            <td><form class="inline-form" method="post" action="{{ url_for('admin.chat_delete', sid=s.id) }}" data-confirm="{{ _('Delete this chat?') }}"><button class="btn btn-danger btn-sm"><i data-lucide="trash-2"></i></button></form></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if pagination.pages > 1 %}
+    <nav class="pagination">{% for p in pagination.iter_pages() %}{% if p %}{% if p == pagination.page %}<span class="current">{{ p }}</span>{% else %}<a href="{{ url_for('admin.chats', page=p, lang=lang) }}">{{ p }}</a>{% endif %}{% else %}<span style="border:0;background:none">…</span>{% endif %}{% endfor %}</nav>
+    {% endif %}
+  </div>
+  <div>
+    <div class="card">
+      <div class="card-head"><h3>{{ _('Top intents detected') }}</h3></div>
+      <div class="card-body">{% for name, count in intents %}<div class="cost-row"><span>{{ name }}</span><b>{{ count }}</b></div>{% endfor %}</div>
+    </div>
+    {% if selected %}
+    <div class="card mt-2">
+      <div class="card-head"><h3>{{ selected.title }}</h3></div>
+      <div class="chat-messages" style="max-height:520px">
+        {% for m in selected.messages %}
+        <div class="msg {{ 'user' if m.role == 'user' else 'bot' }}">
+          {% if m.role != 'user' %}<div class="bot-face"><img src="{{ url_for('static', filename='images/bot.svg') }}" alt=""></div>{% endif %}
+          <div class="bubble"><div class="md" data-md>{{ m.content }}</div>{% if m.intent %}<div class="time">{{ m.intent }}</div>{% endif %}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script>document.querySelectorAll("[data-md]").forEach((el) => (el.innerHTML = YS.markdown(el.textContent)));</script>{% endblock %}

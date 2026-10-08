@@ -1,0 +1,40 @@
+{% set ep = request.endpoint or '' %}
+<nav class="navbar">
+  <div class="container">
+    <button class="icon-btn nav-toggle" aria-label="Menu"><i data-lucide="menu"></i></button>
+    <a class="brand" href="{{ url_for('main.index') }}">
+      <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="YatraSathi logo">
+      <div><div class="brand-name">YatraSathi</div><div class="brand-sub">{{ _('Your AI Travel Companion') }}</div></div>
+    </a>
+    <div class="nav-links">
+      <a href="{{ url_for('main.index') }}" class="{{ 'active' if ep == 'main.index' }}">{{ _('Home') }}</a>
+      <a href="{{ url_for('main.explore') }}" class="{{ 'active' if ep in ('main.explore', 'main.place', 'main.nearby') }}">{{ _('Explore') }}</a>
+      <a href="{{ url_for('main.planner') }}" class="{{ 'active' if ep in ('main.planner', 'main.assistant') }}">{{ _('AI Planner') }}</a>
+      <a href="{{ url_for('main.guide') }}" class="{{ 'active' if ep in ('main.guide', 'main.help_page') }}">{{ _('Travel Guide') }}</a>
+      <a href="{{ url_for('account.dashboard') }}" class="{{ 'active' if ep.startswith('account.') }}">{{ _('My Account') }}</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <a href="{{ url_for('main.set_language', code='en') }}" class="{{ 'active' if lang == 'en' }}"><i data-lucide="globe"></i><span class="lang-label">English</span><span class="lang-short">EN</span></a>
+        <a href="{{ url_for('main.set_language', code='kn') }}" class="{{ 'active' if lang == 'kn' }}">ಕನ್ನಡ</a>
+        <a href="{{ url_for('main.set_language', code='hi') }}" class="{{ 'active' if lang == 'hi' }}">हिंदी</a>
+      </div>
+      {% if current_user.is_authenticated %}
+      <div class="user-menu">
+        <button class="avatar" style="border:0;cursor:pointer" aria-label="Account menu">{{ current_user.initials }}</button>
+        <div class="dropdown">
+          <div class="dd-head"><b>{{ current_user.name }}</b><div class="xs muted">{{ current_user.email }}</div></div>
+          <a href="{{ url_for('account.dashboard') }}"><i data-lucide="layout-dashboard"></i>{{ _('Dashboard') }}</a>
+          <a href="{{ url_for('account.trips') }}"><i data-lucide="briefcase"></i>{{ _('My Trips') }}</a>
+          <a href="{{ url_for('account.saved') }}"><i data-lucide="heart"></i>{{ _('Saved Places') }}</a>
+          <a href="{{ url_for('account.chats') }}"><i data-lucide="message-square"></i>{{ _('Chat History') }}</a>
+          {% if current_user.is_admin %}<a href="{{ url_for('admin.dashboard') }}"><i data-lucide="shield-check"></i>{{ _('Admin Panel') }}</a>{% endif %}
+          <a href="{{ url_for('auth.logout') }}"><i data-lucide="log-out"></i>{{ _('Log Out') }}</a>
+        </div>
+      </div>
+      {% else %}
+      <a class="icon-btn" href="{{ url_for('auth.login') }}" title="{{ _('Login') }}" aria-label="{{ _('Login') }}"><i data-lucide="user"></i></a>
+      {% endif %}
+    </div>
+  </div>
+</nav>

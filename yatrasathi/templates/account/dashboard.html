@@ -1,0 +1,97 @@
+{% extends 'account/base_account.html' %}
+{% from 'partials/macros.html' import place_img, status_pill, trip_image with context %}
+{% block title %}{{ _('My Account') }} · YatraSathi{% endblock %}
+{% block layout_class %}{% endblock %}
+{% block account_content %}
+<section>
+  <div class="card card-body">
+    <div class="row">
+      <div class="avatar lg">{{ current_user.initials }}</div>
+      <div><h2 class="mb-0">{{ _('Welcome back') }}, {{ current_user.first_name }}! 👋</h2><div class="muted">{{ _('Manage your trips, preferences and more.') }}</div></div>
+    </div>
+    <div class="stat-row mt-2">
+      <a class="stat-mini" href="{{ url_for('account.trips') }}"><div class="ic"><i data-lucide="briefcase"></i></div><div><b>{{ stats.upcoming }}</b><span>{{ _('Upcoming Trips') }}</span></div></a>
+      <a class="stat-mini" href="{{ url_for('account.saved') }}"><div class="ic"><i data-lucide="heart"></i></div><div><b>{{ stats.saved_places }}</b><span>{{ _('Saved Places') }}</span></div></a>
+      <a class="stat-mini" href="{{ url_for('account.chats') }}"><div class="ic"><i data-lucide="messages-square"></i></div><div><b>{{ stats.chats }}</b><span>{{ _('Chat Sessions') }}</span></div></a>
+      <a class="stat-mini" href="{{ url_for('account.trips', tab='saved') }}"><div class="ic"><i data-lucide="download"></i></div><div><b>{{ stats.itineraries }}</b><span>{{ _('Itineraries') }}</span></div></a>
+      <a class="stat-mini" href="{{ url_for('main.help_page') }}"><div class="ic"><i data-lucide="star"></i></div><div><b>{{ stats.reviews }}</b><span>{{ _('Reviews') }}</span></div></a>
+    </div>
+  </div>
+
+  <div class="grid mt-2" style="grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)" id="dash-grid">
+    <div class="card">
+      <div class="card-head"><h3>{{ _('Upcoming Trips') }}</h3><a class="link-sm" href="{{ url_for('account.trips') }}">{{ _('View All') }}</a></div>
+      <div class="card-body" style="padding-top:4px">
+        {% for t in trips %}
+        <div class="trip-row">
+          {{ trip_image(t) }}
+          <div class="info"><a href="{{ url_for('account.trip_detail', trip_id=t.id) }}" style="color:inherit"><b>{{ t.title }}</b></a>
+            <div class="meta">{% if t.start_date %}{{ t.start_date|dt('%d %b') }} – {{ t.end_date|dt }}{% else %}{{ t.days }} {{ _('Days') }}{% endif %} · {{ t.travelers }} {{ _('Adults') }}</div></div>
+          <div class="right">{% if t.start_date %}<div class="xs muted">{{ t.start_date|dt }}</div>{% endif %}{{ status_pill(t.status) }}</div>
+        </div>
+        {% else %}
+        <div class="empty-state"><i data-lucide="luggage"></i>{{ _('No trips yet.') }} <a href="{{ url_for('main.planner') }}">{{ _('Plan your first trip') }}</a></div>
+        {% endfor %}
+        {% if trips %}<div class="center mt-1"><a class="btn btn-outline" href="{{ url_for('account.trips') }}"><i data-lucide="calendar"></i>{{ _('View All Trips') }}</a></div>{% endif %}
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-head"><h3>{{ _('Recent Itineraries') }}</h3><a class="link-sm" href="{{ url_for('account.trips', tab='saved') }}">{{ _('View All') }}</a></div>
+        <div class="card-body" style="padding-top:4px">
+          {% for t in recent_itins %}
+          <a class="trip-row" href="{{ url_for('account.trip_detail', trip_id=t.id) }}" style="color:inherit">
+            {{ trip_image(t) }}
+            <div class="info"><b>{{ t.title }}</b><div class="meta">₹{{ t.total_cost|money }} · {{ t.days }} {{ _('Days') }}</div></div>
+            <div class="right"><div class="xs muted">{{ t.created_at|dt }}</div>{{ status_pill(t.status) }}</div>
+          </a>
+          {% else %}<p class="muted small">{{ _('Generated itineraries you save will appear here.') }}</p>{% endfor %}
+        </div>
+      </div>
+      <div class="card mt-2">
+        <div class="card-head"><h3>{{ _('Quick Actions') }}</h3></div>
+        <div class="card-body qa-grid">
+          <a class="qa" href="{{ url_for('main.planner') }}"><i data-lucide="route"></i><div>{{ _('Plan New Trip') }}<small>{{ _('Get AI itinerary') }}</small></div></a>
+          <a class="qa" href="{{ url_for('main.assistant') }}"><i data-lucide="bot"></i><div>{{ _('Ask AI Assistant') }}<small>{{ _('Get travel help') }}</small></div></a>
+          <a class="qa" href="{{ url_for('main.explore') }}"><i data-lucide="compass"></i><div>{{ _('Explore Places') }}<small>{{ _('Discover Karnataka') }}</small></div></a>
+          <a class="qa" href="{{ url_for('account.trips') }}"><i data-lucide="file-down"></i><div>{{ _('Download Trips') }}<small>{{ _('View saved PDFs') }}</small></div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="promo-banner mt-2">
+    <div><b style="font-size:1.1rem">{{ _('Plan smart. Travel better.') }}</b><div class="small muted">{{ _('Let AI create the perfect itinerary for you.') }}</div>
+      <a class="btn btn-dark btn-sm mt-1" href="{{ url_for('main.planner') }}">{{ _('Plan Your Next Trip') }} <i data-lucide="arrow-right"></i></a></div>
+    <i data-lucide="map" style="width:64px;height:64px;color:var(--primary);opacity:.7"></i>
+  </div>
+</section>
+<aside class="right-col">
+  {% if current_user.is_admin %}
+  <div class="card card-body">
+    <div class="row"><i data-lucide="shield-check" style="color:var(--primary);width:28px;height:28px"></i><div><b>{{ _('Admin Panel') }}</b><div class="small muted">{{ _('Administrator Access') }}</div></div></div>
+    <a class="btn btn-dark btn-block mt-2" href="{{ url_for('admin.dashboard') }}">{{ _('Go to Admin Dashboard') }} <i data-lucide="arrow-right"></i></a>
+    <div class="settings-list mt-1">
+      <a href="{{ url_for('admin.destinations') }}"><i data-lucide="map-pin"></i>{{ _('Manage Destinations') }}</a>
+      <a href="{{ url_for('admin.knowledge') }}"><i data-lucide="database"></i>{{ _('Manage AI Knowledge Base') }}</a>
+      <a href="{{ url_for('admin.users') }}"><i data-lucide="users"></i>{{ _('User Management') }}</a>
+      <a href="{{ url_for('admin.feedback') }}"><i data-lucide="message-square-text"></i>{{ _('Feedback & Reports') }}</a>
+      <a href="{{ url_for('admin.reports') }}"><i data-lucide="bar-chart-3"></i>{{ _('Analytics & Insights') }}</a>
+    </div>
+  </div>
+  {% endif %}
+  <div class="card card-body {{ 'mt-2' if current_user.is_admin }}">
+    <h3>{{ _('Account Settings') }}</h3>
+    <div class="settings-list">
+      <a href="{{ url_for('account.profile') }}"><i data-lucide="user"></i>{{ _('Edit Profile') }}</a>
+      <a href="{{ url_for('account.profile', section='password') }}"><i data-lucide="lock"></i>{{ _('Change Password') }}</a>
+      <a href="{{ url_for('account.profile', section='language') }}"><i data-lucide="globe"></i>{{ _('Language Preferences') }}</a>
+      <a href="{{ url_for('account.profile', section='privacy') }}" class="danger"><i data-lucide="trash-2"></i>{{ _('Delete Account') }}</a>
+    </div>
+  </div>
+  <div class="card card-body mt-2" style="background:#f3f4ff">
+    <div class="row" style="align-items:flex-start"><i data-lucide="headphones" style="color:var(--primary);width:28px;height:28px"></i>
+      <div><b>{{ _('Need Help?') }}</b><p class="small muted">{{ _('Our support team is here for you.') }}</p>
+        <a class="btn btn-outline btn-sm" href="{{ url_for('main.help_page') }}#contact"><i data-lucide="headphones"></i>{{ _('Contact Support') }}</a></div></div>
+  </div>
+</aside>
+{% endblock %}

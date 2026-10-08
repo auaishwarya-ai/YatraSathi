@@ -1,0 +1,29 @@
+{% macro place_img(d, cls='place-img', attrs='') -%}
+{%- set local = place_image(d) -%}
+<img {{ attrs }} class="{{ cls }}" src="{{ local or placeholder(d.category) }}"{% if not local %} data-wiki="{{ d.wiki or d.name }}" data-name="{{ d.name }}"{% endif %} alt="{{ place_name(d) }}" loading="lazy" onerror="this.onerror=null;this.src='{{ placeholder(d.category) }}'">
+{%- endmacro %}
+
+{% macro stars(rating, reviews=None) -%}
+<span class="stars"><i data-lucide="star"></i>{{ '%.1f'|format(rating) }}{% if reviews is not none %} <span class="muted" style="font-weight:400">({{ '{:,}'.format(reviews) if reviews < 1000 else '%.1fK'|format(reviews / 1000) }})</span>{% endif %}</span>
+{%- endmacro %}
+
+{% macro place_card(d, saved=None, compact=False, show_fav=True) -%}
+<a class="place-card{{ ' compact' if compact }}" href="{{ url_for('main.place', slug=d.slug) }}" data-slug="{{ d.slug }}">
+  {% if show_fav %}<button class="heart-btn{{ ' saved' if saved and d.id in saved }}" data-fav="{{ d.slug }}" aria-label="{{ _('Save') }}"><i data-lucide="heart"></i></button>{% endif %}
+  {{ place_img(d) }}
+  <div class="body">
+    <div class="title">{{ place_name(d) }}</div>
+    <div class="loc"><i data-lucide="map-pin"></i>{{ d.district }}</div>
+    <div class="foot">{{ stars(d.rating, d.reviews) }}{% if not compact %}<span class="pill">{{ d.category|category }}</span>{% endif %}</div>
+  </div>
+</a>
+{%- endmacro %}
+
+{% macro status_pill(status) -%}
+{%- set cls = {'upcoming': '', 'saved': 'amber', 'completed': 'green', 'cancelled': 'red', 'generated': 'grey'}[status] -%}
+<span class="pill {{ cls }}">{{ _(status|capitalize) }}</span>
+{%- endmacro %}
+
+{% macro trip_image(trip) -%}
+{%- if trip.destination -%}{{ place_img(trip.destination, '') }}{%- else -%}<img src="{{ placeholder('Heritage') }}" alt="">{%- endif -%}
+{%- endmacro %}

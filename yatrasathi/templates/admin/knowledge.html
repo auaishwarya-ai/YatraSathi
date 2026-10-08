@@ -1,0 +1,46 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}{{ _('AI Knowledge Base') }} · Admin{% endblock %}
+{% block page_title %}{{ _('AI Knowledge Base') }}{% endblock %}
+{% block admin_content %}
+<div class="grid grid-4 mb-2">
+  <div class="card kpi"><div class="ic ic-blue"><i data-lucide="database"></i></div><div><div class="label">{{ _('Indexed passages (RAG)') }}</div><div class="value">{{ index_size }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-purple"><i data-lucide="brain-circuit"></i></div><div><div class="label">{{ _('Intent classes') }}</div><div class="value">{{ intents|length }}</div><div class="trend">{{ training }} {{ _('training examples') }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-green"><i data-lucide="file-text"></i></div><div><div class="label">{{ _('Knowledge documents') }}</div><div class="value">{{ docs|length }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-amber"><i data-lucide="sparkles"></i></div><div><div class="label">{{ _('Response generator') }}</div><div class="value" style="font-size:1rem">{{ 'OpenAI LLM + RAG' if llm else _('Offline templates + RAG') }}</div><div class="trend">{{ _('Set OPENAI_API_KEY in .env to enable the LLM') }}</div></div></div>
+</div>
+
+<div class="grid grid-2" style="align-items:start">
+  <div>
+    <form class="card card-body" method="post">
+      <h3>{{ _('Edit document') if edit else _('Add knowledge document') }}</h3>
+      <input type="hidden" name="id" value="{{ edit.id if edit else '' }}">
+      <div class="field"><label class="lbl">{{ _('Title') }}</label><input class="input" name="title" required value="{{ edit.title if edit else '' }}" placeholder="{{ _('e.g. Hampi Utsav 2026 dates') }}"></div>
+      <div class="field"><label class="lbl">{{ _('Category') }}</label><input class="input" name="category" value="{{ edit.category if edit else 'General' }}"></div>
+      <div class="field"><label class="lbl">{{ _('Content') }}</label><textarea class="input" rows="7" name="content" required placeholder="{{ _('Facts the AI assistant should know. Paragraphs are split into passages for retrieval.') }}">{{ edit.content if edit else '' }}</textarea></div>
+      <div class="row"><button class="btn btn-primary"><i data-lucide="save"></i>{{ _('Save & re-index') }}</button>{% if edit %}<a class="btn btn-light" href="{{ url_for('admin.knowledge') }}">{{ _('Cancel') }}</a>{% endif %}</div>
+    </form>
+    <div class="card card-body mt-2">
+      <h3>{{ _('Test retrieval') }}</h3>
+      <form class="row" method="get"><input class="input" name="test" value="{{ test_q }}" placeholder="{{ _('Ask a question, e.g. when is Mysuru Dasara?') }}"><button class="btn btn-outline">{{ _('Search') }}</button></form>
+      {% for r in results %}
+      <div class="review"><div class="row between"><b class="small">{{ r.title }}</b><span class="pill grey">{{ r.score }}</span></div><p class="xs muted mb-0">{{ r.source }} · {{ r.text[:220] }}…</p></div>
+      {% endfor %}
+    </div>
+    <form method="post" action="{{ url_for('admin.knowledge_rebuild') }}" class="mt-2"><button class="btn btn-dark btn-block"><i data-lucide="refresh-ccw"></i>{{ _('Rebuild AI index & retrain intent model') }}</button></form>
+  </div>
+  <div class="card table-wrap">
+    <table class="table">
+      <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Category') }}</th><th>{{ _('Source') }}</th><th></th></tr></thead>
+      <tbody>
+        {% for k in docs %}
+        <tr><td><b class="small">{{ k.title }}</b><div class="xs muted">{{ k.content[:90] }}…</div></td><td class="small">{{ k.category }}</td>
+          <td><span class="pill {{ 'purple' if k.source == 'admin' else 'grey' }}">{{ k.source }}</span></td>
+          <td class="nowrap">{% if k.source == 'admin' %}<a class="btn btn-light btn-sm" href="{{ url_for('admin.knowledge', edit=k.id) }}"><i data-lucide="pencil"></i></a>
+            <form class="inline-form" method="post" action="{{ url_for('admin.knowledge_delete', doc_id=k.id) }}" data-confirm="{{ _('Delete this document?') }}"><button class="btn btn-danger btn-sm"><i data-lucide="trash-2"></i></button></form>{% else %}<span class="xs muted">{{ _('read-only') }}</span>{% endif %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="xs muted" style="padding:0 12px 12px">{{ _('Destination records are also indexed automatically (overview, history, attractions, travel info, food).') }}</p>
+  </div>
+</div>
+{% endblock %}

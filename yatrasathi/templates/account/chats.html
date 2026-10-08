@@ -1,0 +1,21 @@
+{% extends 'account/base_account.html' %}
+{% block title %}{{ _('Chat History') }} · YatraSathi{% endblock %}
+{% block account_content %}
+<section class="card">
+  <div class="card-head"><div><h2 class="mb-0">{{ _('Chat History') }}</h2><div class="small muted">{{ sessions|length }} {{ _('conversations') }}</div></div>
+    <a class="btn btn-primary" href="{{ url_for('main.assistant') }}"><i data-lucide="plus"></i>{{ _('New Chat') }}</a></div>
+  <div class="card-body">
+    {% for s in sessions %}
+    <div class="trip-row">
+      <div class="bot-face"><img src="{{ url_for('static', filename='images/bot.svg') }}" alt=""></div>
+      <div class="info"><a href="{{ url_for('main.assistant', session=s.id) }}" style="color:inherit"><b>{{ s.title }}</b></a>
+        <div class="meta">{{ s.messages.count() }} {{ _('messages') }} · {{ {'en': 'English', 'kn': 'ಕನ್ನಡ', 'hi': 'हिंदी'}[s.language] }} · {{ s.updated_at|dt('%d %b %Y, %H:%M') }}</div></div>
+      <a class="btn btn-light btn-sm" href="{{ url_for('main.assistant', session=s.id) }}">{{ _('Continue') }}</a>
+      <form method="post" action="{{ url_for('account.chat_delete', session_id=s.id) }}" data-confirm="{{ _('Delete this conversation?') }}"><button class="btn btn-ghost btn-sm" title="{{ _('Delete') }}"><i data-lucide="trash-2"></i></button></form>
+    </div>
+    {% else %}
+    <div class="empty-state"><i data-lucide="message-square"></i>{{ _('No conversations yet.') }} <a href="{{ url_for('main.assistant') }}">{{ _('Start chatting') }}</a></div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

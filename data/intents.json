@@ -1,0 +1,112 @@
+{
+  "greeting": [
+    "hi", "hello", "hey", "namaste", "namaskara", "good morning", "good evening", "hello there", "hi yatrasathi", "hey buddy",
+    "ನಮಸ್ಕಾರ", "ಹಲೋ", "ಶುಭೋದಯ", "ನಮಸ್ತೆ",
+    "नमस्ते", "हैलो", "नमस्कार", "सुप्रभात"
+  ],
+  "goodbye": [
+    "bye", "goodbye", "see you", "see you later", "that's all", "ok bye", "talk later",
+    "ಹೋಗಿ ಬರುತ್ತೇನೆ", "ಬೈ", "ಮತ್ತೆ ಸಿಗೋಣ",
+    "अलविदा", "बाय", "फिर मिलेंगे"
+  ],
+  "thanks": [
+    "thanks", "thank you", "thank you so much", "great thanks", "that was helpful", "awesome, thanks", "nice", "super",
+    "ಧನ್ಯವಾದಗಳು", "ಧನ್ಯವಾದ", "ತುಂಬಾ ಉಪಯುಕ್ತ",
+    "धन्यवाद", "शुक्रिया", "बहुत बढ़िया"
+  ],
+  "help": [
+    "what can you do", "help", "how do you work", "what are your features", "who are you", "how can you help me", "what is yatrasathi",
+    "ನೀನು ಏನು ಮಾಡಬಲ್ಲೆ", "ಸಹಾಯ", "ನೀನು ಯಾರು",
+    "तुम क्या कर सकते हो", "मदद", "तुम कौन हो"
+  ],
+  "plan_trip": [
+    "plan a 3 day trip to coorg", "suggest a 3 day trip to coorg from bangalore", "make an itinerary for hampi", "create a 2 day plan for mysore",
+    "itinerary for chikmagalur for 2 people", "plan my weekend trip to gokarna", "i want to go to hampi for 2 days", "day wise plan for udupi",
+    "plan a family trip to mysuru for 4 people", "prepare a travel plan to badami", "generate itinerary for coorg", "3 day itinerary",
+    "plan a trip from mangalore to coorg", "schedule a 4 day tour of coastal karnataka", "trip plan for honeymoon in coorg",
+    "ಕೊಡಗಿಗೆ 3 ದಿನದ ಪ್ರವಾಸ ಯೋಜನೆ ಮಾಡಿ", "ಹಂಪಿಗೆ ಪ್ರವಾಸ ಯೋಜನೆ", "ಮೈಸೂರಿಗೆ 2 ದಿನದ ಯೋಜನೆ", "ಪ್ರವಾಸದ ವೇಳಾಪಟ್ಟಿ ತಯಾರಿಸಿ", "ಬೆಂಗಳೂರಿನಿಂದ ಕೊಡಗಿಗೆ ಪ್ರವಾಸ",
+    "कूर्ग के लिए 3 दिन की यात्रा योजना बनाओ", "हम्पी की यात्रा योजना", "मैसूर के लिए 2 दिन का प्लान", "यात्रा कार्यक्रम बनाओ", "बेंगलुरु से कूर्ग ट्रिप प्लान"
+  ],
+  "recommend": [
+    "suggest places in karnataka for 2 days within 5000", "where should i go this weekend", "recommend places for nature lovers", "best places to visit in karnataka",
+    "suggest some hill stations", "places to visit under 3000 rupees", "best weekend getaways from bangalore", "recommend heritage places",
+    "which place is good for adventure", "suggest beaches in karnataka", "top destinations for a family trip", "where can i go for 1 day within 2000",
+    "best places for honeymoon", "suggest waterfalls to visit", "good places for wildlife safari", "recommend me a destination", "cheap places to visit",
+    "ಕರ್ನಾಟಕದಲ್ಲಿ ನೋಡಬೇಕಾದ ಸ್ಥಳಗಳು", "5000 ರೂಪಾಯಿಯಲ್ಲಿ 2 ದಿನ ಎಲ್ಲಿಗೆ ಹೋಗಬಹುದು", "ಗಿರಿಧಾಮಗಳನ್ನು ಸೂಚಿಸಿ", "ವಾರಾಂತ್ಯಕ್ಕೆ ಉತ್ತಮ ಸ್ಥಳಗಳು", "ಜಲಪಾತಗಳನ್ನು ಸೂಚಿಸಿ",
+    "कर्नाटक में घूमने की जगहें बताओ", "5000 रुपये में 2 दिन कहाँ जाएँ", "हिल स्टेशन सुझाओ", "वीकेंड के लिए अच्छी जगहें", "झरने सुझाओ"
+  ],
+  "budget": [
+    "how much will a trip to coorg cost", "budget for hampi trip", "estimated cost for 2 days in mysore", "what is the cost of visiting gokarna",
+    "is 5000 enough for coorg", "budget trip to coorg", "expenses for chikmagalur trip", "how much money do i need for udupi", "cost breakdown for a trip",
+    "ಕೊಡಗು ಪ್ರವಾಸಕ್ಕೆ ಎಷ್ಟು ಖರ್ಚಾಗುತ್ತದೆ", "ಹಂಪಿ ಪ್ರವಾಸದ ಬಜೆಟ್", "ಪ್ರವಾಸದ ವೆಚ್ಚ ಎಷ್ಟು",
+    "कूर्ग यात्रा का खर्च कितना होगा", "हम्पी ट्रिप का बजट", "यात्रा का खर्च कितना"
+  ],
+  "place_info": [
+    "tell me about hampi", "what is hampi famous for", "information about mysore palace", "describe coorg", "what is special about badami",
+    "about jog falls", "details of gokarna", "why is belur famous", "what is there in chikmagalur", "explain gol gumbaz",
+    "ಹಂಪಿಯ ಬಗ್ಗೆ ತಿಳಿಸಿ", "ಮೈಸೂರು ಅರಮನೆ ಬಗ್ಗೆ ಮಾಹಿತಿ", "ಜೋಗ ಜಲಪಾತದ ವಿಶೇಷತೆ ಏನು", "ಬೇಲೂರು ಯಾಕೆ ಪ್ರಸಿದ್ಧ",
+    "हम्पी के बारे में बताओ", "मैसूर पैलेस की जानकारी", "जोग फॉल्स क्यों प्रसिद्ध है", "कूर्ग के बारे में बताइए"
+  ],
+  "story": [
+    "tell me the story of hampi", "history of mysore palace", "what is the legend of gokarna", "narrate the history of badami", "tell me a story about chitradurga fort",
+    "who built gol gumbaz", "history of srirangapatna", "legend of murudeshwar", "tell me the story behind shravanabelagola", "storytelling about belur",
+    "ಹಂಪಿಯ ಕಥೆ ಹೇಳಿ", "ಮೈಸೂರು ಅರಮನೆಯ ಇತಿಹಾಸ", "ಚಿತ್ರದುರ್ಗ ಕೋಟೆಯ ಕಥೆ", "ಗೋಲ ಗುಮ್ಮಟ ಕಟ್ಟಿದವರು ಯಾರು",
+    "हम्पी की कहानी सुनाओ", "मैसूर पैलेस का इतिहास", "चित्रदुर्ग किले की कहानी", "गोल गुंबज किसने बनवाया"
+  ],
+  "best_time": [
+    "best time to visit coorg", "when should i visit hampi", "which month is good for jog falls", "best season for gokarna", "when to go to chikmagalur",
+    "is it good to visit hampi in summer", "best month for bandipur safari",
+    "ಕೊಡಗಿಗೆ ಹೋಗಲು ಉತ್ತಮ ಸಮಯ", "ಜೋಗ ಜಲಪಾತಕ್ಕೆ ಯಾವಾಗ ಹೋಗಬೇಕು", "ಹಂಪಿಗೆ ಯಾವ ತಿಂಗಳು ಉತ್ತಮ",
+    "कूर्ग जाने का सबसे अच्छा समय", "जोग फॉल्स कब जाएँ", "हम्पी किस महीने में जाएँ"
+  ],
+  "food": [
+    "must try food in coorg", "what to eat in mangalore", "famous food of mysore", "local cuisine of udupi", "best dishes in north karnataka",
+    "where to eat in hampi", "famous sweets of karnataka", "vegetarian food in karnataka",
+    "ಕೊಡಗಿನ ಪ್ರಸಿದ್ಧ ಆಹಾರ", "ಮಂಗಳೂರಿನಲ್ಲಿ ಏನು ತಿನ್ನಬೇಕು", "ಕರ್ನಾಟಕದ ಸಿಹಿತಿಂಡಿಗಳು",
+    "कूर्ग का प्रसिद्ध खाना", "मंगलौर में क्या खाएँ", "कर्नाटक के प्रसिद्ध व्यंजन"
+  ],
+  "how_to_reach": [
+    "how to reach hampi from bangalore", "how do i get to coorg", "nearest railway station to jog falls", "how to go to gokarna", "bus from bangalore to chikmagalur",
+    "how far is mysore from bangalore", "distance from bangalore to coorg", "nearest airport to udupi",
+    "ಹಂಪಿಗೆ ಹೇಗೆ ಹೋಗುವುದು", "ಬೆಂಗಳೂರಿನಿಂದ ಕೊಡಗಿಗೆ ಎಷ್ಟು ದೂರ", "ಜೋಗಕ್ಕೆ ಹತ್ತಿರದ ರೈಲು ನಿಲ್ದಾಣ",
+    "हम्पी कैसे पहुँचें", "बेंगलुरु से कूर्ग की दूरी", "जोग फॉल्स का नज़दीकी रेलवे स्टेशन"
+  ],
+  "timings_fee": [
+    "what are the timings of mysore palace", "entry fee for hampi", "ticket price for bannerghatta", "opening hours of lalbagh", "is there an entry fee for jog falls",
+    "when does gol gumbaz open", "ticket cost for bangalore palace",
+    "ಮೈಸೂರು ಅರಮನೆಯ ಸಮಯ", "ಹಂಪಿ ಪ್ರವೇಶ ಶುಲ್ಕ", "ಟಿಕೆಟ್ ದರ ಎಷ್ಟು",
+    "मैसूर पैलेस का समय", "हम्पी का प्रवेश शुल्क", "टिकट कितने का है"
+  ],
+  "attractions": [
+    "top attractions in coorg", "things to do in hampi", "what to see in mysore", "places to see in chikmagalur", "must visit spots in gokarna",
+    "sightseeing in udupi", "best places inside hampi", "activities in dandeli",
+    "ಕೊಡಗಿನಲ್ಲಿ ನೋಡಬೇಕಾದ ಸ್ಥಳಗಳು", "ಹಂಪಿಯಲ್ಲಿ ಏನು ನೋಡಬೇಕು", "ಮೈಸೂರಿನ ಆಕರ್ಷಣೆಗಳು",
+    "कूर्ग में देखने लायक जगहें", "हम्पी में क्या देखें", "मैसूर के आकर्षण"
+  ],
+  "nearby": [
+    "places near mysore", "what is near hampi", "nearby attractions to coorg", "places around chikmagalur", "tourist spots close to udupi", "near bangalore",
+    "ಮೈಸೂರಿನ ಸಮೀಪದ ಸ್ಥಳಗಳು", "ಹಂಪಿಯ ಹತ್ತಿರ ಏನಿದೆ",
+    "मैसूर के पास की जगहें", "हम्पी के पास क्या है"
+  ],
+  "festival": [
+    "festivals of karnataka", "when is mysore dasara", "what is kambala", "hampi utsav dates", "cultural events in karnataka", "tell me about dasara",
+    "ಕರ್ನಾಟಕದ ಹಬ್ಬಗಳು", "ಮೈಸೂರು ದಸರಾ ಯಾವಾಗ", "ಕಂಬಳ ಎಂದರೇನು",
+    "कर्नाटक के त्योहार", "मैसूर दशहरा कब है", "कंबाला क्या है"
+  ],
+  "safety": [
+    "is it safe to travel to coorg", "safety tips for solo travel", "emergency numbers in karnataka", "police helpline number", "is gokarna safe for women",
+    "ambulance number", "travel safety tips",
+    "ಸುರಕ್ಷತಾ ಸಲಹೆಗಳು", "ತುರ್ತು ಸಂಖ್ಯೆಗಳು", "ಮಹಿಳೆಯರಿಗೆ ಸುರಕ್ಷಿತವೇ",
+    "सुरक्षा सुझाव", "आपातकालीन नंबर", "क्या महिलाओं के लिए सुरक्षित है"
+  ],
+  "weather": [
+    "weather in coorg", "how is the weather in hampi", "will it rain in chikmagalur", "climate of karnataka", "is it cold in coorg in december", "monsoon in karnataka",
+    "ಕೊಡಗಿನ ಹವಾಮಾನ", "ಮಳೆಗಾಲದಲ್ಲಿ ಹೇಗಿರುತ್ತದೆ",
+    "कूर्ग का मौसम", "कर्नाटक की जलवायु"
+  ],
+  "transport": [
+    "how to travel within karnataka", "ksrtc bus booking", "is there metro in bangalore", "taxi charges in karnataka", "train options in karnataka", "local transport in mysore",
+    "ಕೆಎಸ್‌ಆರ್‌ಟಿಸಿ ಬಸ್", "ಸ್ಥಳೀಯ ಸಾರಿಗೆ",
+    "केएसआरटीसी बस", "स्थानीय परिवहन"
+  ]
+}

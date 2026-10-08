@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ _('Nearby Places') }} · YatraSathi{% endblock %}
+{% block content %}
+<div class="container page">
+  <div class="row between wrap mb-2">
+    <div><h1 class="mb-0" style="font-size:1.6rem">{{ _('Nearby Places') }}</h1><div class="muted small">{{ _('Places near') }} <b id="origin-label">…</b></div></div>
+    <div class="row wrap">
+      <select class="select" id="origin-select" style="width:auto;min-width:240px" aria-label="{{ _('Starting point') }}">
+        <optgroup label="{{ _('Cities') }}">
+          {% for c in cities %}<option value="city:{{ c.name }}" {{ 'selected' if (origin == 'city:' + c.name) or (not origin and c.name == 'Mysuru') }}>{{ c['name_' + lang] if lang != 'en' else c.name }}</option>{% endfor %}
+        </optgroup>
+        <optgroup label="{{ _('Tourist places') }}">
+          {% for d in places %}<option value="place:{{ d.slug }}" {{ 'selected' if origin == 'place:' + d.slug }}>{{ place_name(d) }}</option>{% endfor %}
+        </optgroup>
+      </select>
+      <button class="btn btn-primary" id="use-location"><i data-lucide="locate-fixed"></i>{{ _('Use my location') }}</button>
+    </div>
+  </div>
+  <div class="nearby-layout">
+    <div class="card">
+      <div class="tabs" style="padding:0 10px">
+        <button class="active" data-cat="">{{ _('All') }}</button>
+        {% for cat, count in categories %}<button data-cat="{{ cat }}">{{ cat|category }}</button>{% endfor %}
+      </div>
+      <div class="nearby-list" id="nearby-list"><div class="loading-overlay"><div class="spinner"></div></div></div>
+    </div>
+    <div>
+      <div class="nearby-map" id="nearby-map"></div>
+      <div class="row between mt-1">
+        <span class="xs muted">{{ _('Distances are approximate road distances.') }}</span>
+        <a class="btn btn-primary btn-sm" id="open-maps" target="_blank" rel="noopener" href="https://www.google.com/maps">{{ _('Open in Maps') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script id="points-json" type="application/json">{{ points|tojson }}</script>
+<script id="cities-json" type="application/json">{{ cities|tojson }}</script>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/nearby.js') }}"></script>{% endblock %}

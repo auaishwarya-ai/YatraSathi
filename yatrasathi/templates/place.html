@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% from 'partials/macros.html' import place_card, place_img, stars with context %}
+{% block title %}{{ place_name(d) }} · YatraSathi{% endblock %}
+{% block content %}
+<div class="container page">
+  <div class="small muted mb-2"><a href="{{ url_for('main.index') }}">{{ _('Home') }}</a> › <a href="{{ url_for('main.explore') }}">{{ _('Explore Karnataka') }}</a> › {{ place_name(d) }}</div>
+  <div class="place-hero">
+    <div>{{ place_img(d, 'gallery-main') }}</div>
+    <div class="card card-body">
+      <div class="row between" style="align-items:flex-start">
+        <div>
+          <span class="pill">{{ d.category|category }}</span>
+          <h1 class="place-title mt-1 mb-0">{{ place_name(d) }}</h1>
+          {% if lang != 'en' %}<div class="muted small">{{ d.name }}</div>{% endif %}
+          <div class="muted small row" style="gap:5px"><i data-lucide="map-pin"></i>{{ d.district }}, Karnataka</div>
+        </div>
+        <div class="right">{{ stars(d.rating) }}<div class="xs muted">{{ '{:,}'.format(d.reviews) }} {{ _('reviews') }}</div></div>
+      </div>
+      <p class="mt-2" id="place-summary">{{ d.localized_summary(lang) }}</p>
+      <div class="facts">
+        <div class="fact"><i data-lucide="calendar-clock"></i><div><b>{{ _('Best time to visit') }}</b>{{ d|month_range }}</div></div>
+        <div class="fact"><i data-lucide="clock"></i><div><b>{{ _('Timings') }}</b>{{ d.timings }}</div></div>
+        <div class="fact"><i data-lucide="ticket"></i><div><b>{{ _('Entry Fee') }}</b>{% if d.entry_fee_indian or d.entry_fee_foreign %}₹{{ d.entry_fee_indian }} ({{ _('Indians') }}) · ₹{{ d.entry_fee_foreign }} ({{ _('Foreigners') }}){% else %}{{ _('Free') }}{% endif %}</div></div>
+        <div class="fact"><i data-lucide="hourglass"></i><div><b>{{ _('Ideal duration') }}</b>{{ d.ideal_days }} {{ _('day(s)') }}</div></div>
+      </div>
+      <div class="row wrap">
+        <a class="btn btn-primary" href="{{ url_for('main.assistant', place=d.slug) }}"><i data-lucide="bot"></i>{{ _('Ask AI about this place') }}</a>
+        <button class="btn btn-outline{{ ' saved' if d.id in saved }}" data-fav="{{ d.slug }}"><i data-lucide="heart"></i><span class="fav-label">{{ _('Saved') if d.id in saved else _('Add to Favorites') }}</span></button>
+        <a class="btn btn-light" href="{{ url_for('main.planner', destination=d.slug, days=d.ideal_days) }}"><i data-lucide="calendar-plus"></i>{{ _('Plan a trip here') }}</a>
+        <button class="btn btn-ghost" data-speak="#story-text" data-lang="{{ lang }}" title="{{ _('Listen') }}"><i data-lucide="volume-2"></i>{{ _('Listen to story') }}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-layout">
+    <div class="card">
+      <div class="card-body" style="padding-bottom:0">
+        <div class="tabs" data-tabs>
+          <button class="active" data-tab="t-overview">{{ _('Overview') }}</button>
+          <button data-tab="t-attractions">{{ _('Attractions') }}</button>
+          <button data-tab="t-nearby">{{ _('Nearby Places') }}</button>
+          <button data-tab="t-stay">{{ _('Stay & Budget') }}</button>
+          <button data-tab="t-food">{{ _('Food') }}</button>
+          <button data-tab="t-map">{{ _('Map') }}</button>
+          <button data-tab="reviews">{{ _('Reviews') }}</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tab-panel active" id="t-overview">
+          <h3>{{ _('About') }} {{ place_name(d) }}</h3>
+          <p>{{ d.description }}</p>
+          <div id="story-text">
+            <h3 class="mt-2">📖 {{ _('History & Story') }}</h3>
+            {% if lang != 'en' %}<p>{{ d.localized_summary(lang) }}</p>{% endif %}
+            <p>{{ d.history }}</p>
+          </div>
+          <h3 class="mt-2">{{ _('How to Reach') }}</h3>
+          <p>{{ d.how_to_reach }}</p>
+          <h3 class="mt-2">{{ _('Travel Tips') }}</h3>
+          <p>{{ d.tips }}</p>
+          <div class="row wrap">{% for t in d.tags_list %}<span class="pill grey">#{{ t }}</span>{% endfor %}</div>
+        </div>
+        <div class="tab-panel" id="t-attractions">
+          <div class="attraction-list">
+            {% for a in d.attractions_list %}<div class="attraction"><span class="num">{{ loop.index }}</span>{{ a }}</div>{% endfor %}
+          </div>
+        </div>
+        <div class="tab-panel" id="t-nearby">
+          <div class="grid grid-3">
+            {% for n in nearby_places %}
+            <a class="place-card compact" href="{{ url_for('main.place', slug=n.slug) }}">{{ place_img(n) }}
+              <div class="body"><div class="title">{{ place_name(n) }}</div><div class="loc"><i data-lucide="navigation"></i>{{ (near_km[n.slug] * 1.3)|round|int }} km</div></div></a>
+            {% endfor %}
+          </div>
+          <a class="btn btn-light mt-2" href="{{ url_for('main.nearby', **{'from': 'place:' + d.slug}) }}"><i data-lucide="map-pinned"></i>{{ _('Open Nearby Places map') }}</a>
+        </div>
+        <div class="tab-panel" id="t-stay">
+          {% if estimate %}
+          <p>{{ _('Estimated cost for a') }} <b>{{ estimate.days }}-{{ _('day trip') }}</b> {{ _('for 2 travellers from') }} <b>{{ estimate.start_label }}</b> ({{ estimate.one_way_km }} km {{ _('one way') }}):</p>
+          <div class="grid grid-2">
+            <div>
+              <div class="cost-row"><span>{{ _('Transport') }}</span><b>₹{{ (estimate.costs.transport + estimate.costs.local_transport)|money }}</b></div>
+              <div class="cost-row"><span>{{ _('Stay') }}</span><b>₹{{ estimate.costs.accommodation|money }}</b></div>
+              <div class="cost-row"><span>{{ _('Food') }}</span><b>₹{{ estimate.costs.food|money }}</b></div>
+              <div class="cost-row"><span>{{ _('Entry fees') }}</span><b>₹{{ estimate.costs.entry_fees|money }}</b></div>
+              <div class="cost-total"><span>{{ _('Total') }}</span><span class="amt">₹{{ estimate.costs.total|money }}</span></div>
+            </div>
+            <div class="cost-card">
+              <b>{{ _('Where to stay') }}</b>
+              <ul class="small">
+                <li>{{ _('Budget lodge / homestay') }} · ~₹{{ (1200 * d.cost_index)|round(-1)|int|money }}/{{ _('night') }}</li>
+                <li>{{ _('3-star hotel / plantation homestay') }} · ~₹{{ (2800 * d.cost_index)|round(-1)|int|money }}/{{ _('night') }}</li>
+                <li>{{ _('Resort / heritage hotel') }} · ~₹{{ (7000 * d.cost_index)|round(-1)|int|money }}/{{ _('night') }}</li>
+              </ul>
+              <a class="btn btn-primary btn-sm" href="{{ url_for('main.planner', destination=d.slug, days=d.ideal_days) }}">{{ _('Customise in AI Planner') }}</a>
+            </div>
+          </div>
+          <p class="xs muted mt-2">{{ _('Costs are estimates - please confirm current prices before travelling.') }}</p>
+          {% endif %}
+        </div>
+        <div class="tab-panel" id="t-food">
+          <div class="attraction-list">{% for f in d.food_list %}<div class="attraction"><span class="num">🍽</span>{{ f }}</div>{% endfor %}</div>
+          <a class="btn btn-light mt-2" href="{{ url_for('main.guide', section='cuisine') }}">{{ _('Explore Karnataka cuisine') }}</a>
+        </div>
+        <div class="tab-panel" id="t-map">
+          <div class="mini-map" id="mini-map" style="height:360px" data-lat="{{ d.lat }}" data-lng="{{ d.lng }}"></div>
+          <a class="btn btn-light mt-2" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination={{ d.lat }},{{ d.lng }}"><i data-lucide="navigation"></i>{{ _('Get directions') }}</a>
+        </div>
+        <div class="tab-panel" id="reviews">
+          {% for r in reviews %}
+          <div class="review"><div class="row between"><b>{{ r.name }}</b><span class="xs muted">{{ r.created_at|dt }}</span></div>
+            <div class="stars">{% for i in range(r.rating) %}<i data-lucide="star"></i>{% endfor %}</div>
+            <p class="small mb-0">{{ r.message }}</p></div>
+          {% else %}<p class="muted">{{ _('No reviews yet. Be the first to review!') }}</p>{% endfor %}
+          <form method="post" action="{{ url_for('main.add_review', slug=d.slug) }}" class="mt-2">
+            <h4>{{ _('Write a review') }}</h4>
+            <div class="star-input">{% for i in range(5, 0, -1) %}<input type="radio" name="rating" id="r{{ i }}" value="{{ i }}" {{ 'checked' if i == 5 }}><label for="r{{ i }}">★</label>{% endfor %}</div>
+            <textarea class="input mt-1" name="message" required placeholder="{{ _('Share your experience...') }}"></textarea>
+            <button class="btn btn-primary mt-1">{{ _('Post Review') }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <aside>
+      <div class="card card-body">
+        <h3>{{ _('Plan with AI') }}</h3>
+        <p class="small muted">{{ _('Ask the assistant anything about') }} {{ place_name(d) }}.</p>
+        <div class="row wrap">
+          {% set qs = {'en': ['Tell me the story of ' + d.name, 'Best time to visit ' + d.name, 'How to reach ' + d.name, 'Must try food in ' + d.name],
+                       'kn': [place_name(d) + ' ಕಥೆ ಹೇಳಿ', place_name(d) + ' ಭೇಟಿಗೆ ಉತ್ತಮ ಸಮಯ', place_name(d) + ' ತಲುಪುವುದು ಹೇಗೆ', place_name(d) + ' ಪ್ರಸಿದ್ಧ ಆಹಾರ'],
+                       'hi': [place_name(d) + ' की कहानी सुनाओ', place_name(d) + ' जाने का सबसे अच्छा समय', place_name(d) + ' कैसे पहुँचें', place_name(d) + ' का प्रसिद्ध खाना']}[lang] %}
+          {% for q in qs %}<a class="chip" href="{{ url_for('main.assistant', q=q) }}">{{ q }}</a>{% endfor %}
+        </div>
+      </div>
+      <div class="card mt-2">
+        <div class="card-head"><h3>{{ _('Similar Places') }}</h3></div>
+        <div class="card-body" style="padding-top:8px">
+          {% for s in similar %}
+          <a class="trip-row" href="{{ url_for('main.place', slug=s.slug) }}" style="color:inherit">{{ place_img(s, '') }}
+            <div class="info"><b>{{ place_name(s) }}</b><div class="meta">{{ s.district }} · {{ s.category|category }}</div>{{ stars(s.rating) }}</div></a>
+          {% endfor %}
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/explore.js') }}"></script>
+<script>
+document.addEventListener("click", (e) => { const b = e.target.closest('[data-tab="t-map"]'); if (b) setTimeout(() => { const m = document.getElementById("mini-map"); m && m._map && m._map.invalidateSize(); }, 60); });
+if (location.hash === "#reviews") document.querySelector('[data-tab="reviews"]').click();
+</script>{% endblock %}

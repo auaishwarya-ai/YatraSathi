@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block title %}{{ _('AI Trip Planner') }} · YatraSathi{% endblock %}
+{% block content %}
+<div class="container page" style="padding-top:20px">
+  <div class="planner-top">
+    <div class="row">
+      <div class="bot-face"><img src="{{ url_for('static', filename='images/bot.svg') }}" alt=""></div>
+      <div><h1 class="mb-0" style="font-size:1.4rem">{{ _('AI Travel Assistant') }}</h1><div class="muted small">{{ _('Your Smart Guide to Karnataka') }}</div></div>
+    </div>
+    <button class="btn btn-outline" type="button" id="voice-top" data-mic-proxy><i data-lucide="mic"></i>{{ _('Voice Input') }}</button>
+  </div>
+
+  <div class="planner-layout">
+    <!-- Conversational planner -->
+    <section class="card planner-chat" id="planner-chat">
+      <div class="chat-messages"></div>
+      <div class="suggest-row">
+        <button type="button" class="chip" data-ask="{{ _('Best places in Coorg') }}">{{ _('Best places in Coorg') }}</button>
+        <button type="button" class="chip" data-ask="{{ _('Top waterfalls') }}">{{ _('Top waterfalls') }}</button>
+        <button type="button" class="chip" data-ask="{{ _('Coorg travel tips') }}">{{ _('Coorg travel tips') }}</button>
+      </div>
+      <div class="chat-input">
+        <form class="chat-form" autocomplete="off">
+          <input class="chat-text" placeholder="{{ _('Type your message...') }}" aria-label="{{ _('Type your message...') }}">
+          <button type="button" class="mic-btn" data-mic title="{{ _('Speak') }}"><i data-lucide="mic"></i></button>
+          <button class="send-btn" aria-label="{{ _('Send') }}"><i data-lucide="send"></i></button>
+        </form>
+        <div class="or-sep">{{ _('or') }}</div>
+        <button type="button" class="btn btn-outline btn-block" data-mic><i data-lucide="mic"></i>{{ _('Speak Now') }}</button>
+      </div>
+    </section>
+
+    <!-- Itinerary -->
+    <section>
+      <div class="card card-body mb-2">
+        <div class="tabs mb-2" style="margin-top:-6px">
+          <a class="active" href="#">{{ _('AI Chat') }}</a>
+          <a href="#plan-form">{{ _('Trip Planner') }}</a>
+          <a href="{{ url_for('main.assistant') }}">{{ _('Full-screen chat') }}</a>
+        </div>
+        <div class="small bold mb-1">{{ _('Suggested Questions') }}</div>
+        <div class="row wrap">
+          {% for q in [_('Best time to visit Coorg'), _('Must try food in Coorg'), _('3 day itinerary for Coorg'), _('Budget trip to Coorg'), _('Suggest places in Karnataka for 2 days within ₹5000')] %}
+          <button class="chip" type="button" data-ask-plan="{{ q }}">{{ q }}</button>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="card itinerary-panel" id="itinerary">
+        <div class="empty-state">
+          <i data-lucide="map"></i>
+          <h3>{{ _('Your AI itinerary will appear here') }}</h3>
+          <p>{{ _('Fill the Trip Planner form or simply ask the assistant, e.g. “Suggest a 3 day trip to Coorg from Bangalore”.') }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form -->
+    <aside class="planner-form-col">
+      <form class="card card-body" id="plan-form" data-autorun="{{ '1' if preset else '0' }}">
+        <h2 class="mb-0">{{ _('Trip Planner') }}</h2>
+        <p class="muted small">{{ _('Plan your perfect trip with AI') }}</p>
+        {% set p = preset or {} %}
+        <div class="field">
+          <label class="lbl" for="start">{{ _('Starting Location') }}</label>
+          <select class="select" name="start" id="start">
+            {% for c in cities %}<option value="{{ c.name }}" {{ 'selected' if c.name == (p.start or default_start) }}>{{ c['name_' + lang] if lang != 'en' else c.name }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label class="lbl" for="destination">{{ _('Destination') }}</label>
+          <select class="select" name="destination" id="destination">
+            <option value="auto">✨ {{ _('Let AI recommend (based on budget & interests)') }}</option>
+            {% for d in dests %}<option value="{{ d.slug }}" {{ 'selected' if d.slug == (p.destination or 'coorg') }}>{{ place_name(d) }} - {{ d.district }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="grid grid-2" style="gap:12px">
+          <div class="field">
+            <label class="lbl" for="days">{{ _('Number of Days') }}</label>
+            <select class="select" name="days" id="days">{% for n in range(1, 8) %}<option value="{{ n }}" {{ 'selected' if n == (p.days or 3) }}>{{ n }} {{ _('Days') if n > 1 else _('Day') }}</option>{% endfor %}</select>
+          </div>
+          <div class="field">
+            <label class="lbl" for="travelers">{{ _('Travelers') }}</label>
+            <select class="select" name="travelers" id="travelers">{% for n in range(1, 11) %}<option value="{{ n }}" {{ 'selected' if n == (p.travelers or 2) }}>{{ n }} {{ _('Adults') if n > 1 else _('Adult') }}</option>{% endfor %}</select>
+          </div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="budget">{{ _('Budget (₹, total)') }}</label>
+          <input class="input" type="number" min="0" step="500" name="budget" id="budget" value="{{ p.budget or '' }}" placeholder="{{ _('e.g. 15000 (leave empty for no limit)') }}">
+        </div>
+        <div class="grid grid-2" style="gap:12px">
+          <div class="field">
+            <label class="lbl" for="style">{{ _('Travel Style') }}</label>
+            <select class="select" name="style" id="style">
+              {% for s, label in [('budget', 'Budget'), ('standard', 'Standard'), ('luxury', 'Luxury')] %}<option value="{{ s }}" {{ 'selected' if s == (p.style or 'standard') }}>{{ _(label) }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="field">
+            <label class="lbl" for="transport">{{ _('Transport') }}</label>
+            <select class="select" name="transport" id="transport">
+              <option value="auto">{{ _('Auto (best value)') }}</option><option value="bus">{{ _('Bus') }}</option><option value="car">{{ _('Cab / Car') }}</option><option value="train">{{ _('Train') }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">{{ _('Travel Interests') }}</span>
+          <div class="interest-grid">
+            {% set icons = {'Nature': 'trees', 'Adventure': 'mountain', 'Heritage': 'landmark', 'Relaxation': 'umbrella', 'Spiritual': 'church', 'Wildlife': 'paw-print', 'Beaches': 'waves', 'Waterfalls': 'droplets', 'Hill Stations': 'mountain-snow'} %}
+            {% for i in interests[:5] %}
+            <label class="interest {{ 'active' if i in (p.interests or ['Nature']) }}"><input type="checkbox" name="interests" value="{{ i }}" {{ 'checked' if i in (p.interests or ['Nature']) }}><i data-lucide="{{ icons[i] }}"></i>{{ _(i) }}</label>
+            {% endfor %}
+          </div>
+          <details class="mt-1"><summary class="small" style="cursor:pointer;color:var(--primary)">+ {{ _('More') }}</summary>
+            <div class="interest-grid mt-1">
+              {% for i in interests[5:] %}
+              <label class="interest {{ 'active' if i in (p.interests or []) }}"><input type="checkbox" name="interests" value="{{ i }}" {{ 'checked' if i in (p.interests or []) }}><i data-lucide="{{ icons[i] }}"></i>{{ _(i) }}</label>
+              {% endfor %}
+            </div>
+          </details>
+        </div>
+        <button class="btn btn-primary btn-block btn-lg"><i data-lucide="sparkles"></i>{{ _('Generate Itinerary') }}</button>
+      </form>
+      <div class="cost-card mt-2" id="cost-summary">
+        <div class="small muted">{{ _('Estimated Trip Cost') }}</div>
+        <div class="big">₹ —</div>
+        <div class="xs muted">{{ _('Generate an itinerary to see the cost breakdown.') }}</div>
+      </div>
+      <div class="card card-body mt-2 feature-list">
+        <div><i data-lucide="route"></i>{{ _('Route Optimization') }}</div>
+        <div><i data-lucide="bot"></i>{{ _('24x7 AI Assistance') }}</div>
+        <div><i data-lucide="hotel"></i>{{ _('Stay Suggestions') }}</div>
+        <div><i data-lucide="file-down"></i>{{ _('Offline PDF Itinerary') }}</div>
+        <div><i data-lucide="bus"></i>{{ _('Transport Options') }}</div>
+        <div><i data-lucide="bookmark"></i>{{ _('Save & Share Trip') }}</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script id="places-json" type="application/json">{{ places_map|tojson }}</script>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<script src="{{ url_for('static', filename='js/planner.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("voice-top").addEventListener("click", () => {
+    const btn = document.querySelector("#planner-chat [data-mic]");
+    btn && btn.click();
+  });
+});
+</script>
+{% endblock %}
