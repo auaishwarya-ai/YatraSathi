@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}{{ _('AI Travel Assistant') }} · YatraSathi{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+<div class="container" style="padding-top:20px;padding-bottom:20px">
+  <div class="assistant-layout">
+    <aside class="card history-panel">
+      <div class="card-body" style="padding-bottom:10px">
+        <button class="btn btn-primary btn-block" data-new-chat-global><i data-lucide="plus"></i>{{ _('New Chat') }}</button>
+      </div>
+      <div class="small bold" style="padding:0 20px 6px">{{ _('Chat History') }}</div>
+      <div class="history-list">
+        {% for s in sessions %}
+        <a href="{{ url_for('main.assistant', session=s.id) }}" class="{{ 'active' if resume == s.id }}"><i data-lucide="message-square"></i><span>{{ s.title }}</span></a>
+        {% else %}
+        <div class="small muted" style="padding:0 10px">{% if current_user.is_authenticated %}{{ _('Your conversations will appear here.') }}{% else %}<span><b style="color:var(--primary);cursor:pointer" onclick="location.href='{{ url_for('auth.login', next=url_for('main.assistant')) }}'">{{ _('Log in') }}</b> {{ _('to keep your chat history.') }}</span>{% endif %}</div>
+        {% endfor %}
+      </div>
+      <div class="card-body" style="border-top:1px solid var(--border)">
+        <div class="small bold mb-1">{{ _('Try asking') }}</div>
+        <div class="stack small try-list">
+          <a href="#" data-ask-global="{{ _('Suggest places in Karnataka for 2 days within ₹5000') }}">💸 {{ _('Budget trip ideas') }}</a>
+          <a href="#" data-ask-global="{{ _('Tell me the story of Hampi') }}">📖 {{ _('Storytelling mode') }}</a>
+          <a href="#" data-ask-global="{{ _('Festivals of Karnataka') }}">🎉 {{ _('Festivals') }}</a>
+          <a href="#" data-ask-global="{{ _('Emergency numbers') }}">🆘 {{ _('Safety & emergency') }}</a>
+        </div>
+      </div>
+    </aside>
+
+    <section class="card chat-main" id="assistant-chat">
+      <div class="chat-header">
+        <div class="bot-face"><img src="{{ url_for('static', filename='images/bot.svg') }}" alt=""></div>
+        <div class="grow"><h3>{{ _('YatraSathi AI Guide') }}</h3><div class="small muted"><span class="status-dot"></span> {{ _('Your Smart Travel Assistant') }}{% if llm_enabled %} · LLM + RAG{% else %} · {{ _('Offline AI (NLP + RAG)') }}{% endif %}</div></div>
+        <div class="seg" title="{{ _('Reply language') }}">
+          <button type="button" data-chat-lang="en" class="{{ 'active' if lang == 'en' }}">EN</button>
+          <button type="button" data-chat-lang="kn" class="{{ 'active' if lang == 'kn' }}">ಕನ್ನಡ</button>
+          <button type="button" data-chat-lang="hi" class="{{ 'active' if lang == 'hi' }}">हिंदी</button>
+        </div>
+        <button class="icon-btn" type="button" data-voice-toggle title="{{ _('Read replies aloud') }}"><i data-lucide="volume-2"></i></button>
+        <button class="icon-btn" type="button" data-new-chat title="{{ _('New Chat') }}"><i data-lucide="rotate-ccw"></i></button>
+      </div>
+      <div class="chat-messages"></div>
+      <div class="suggest-row">
+        <button type="button" class="chip" data-ask="{{ _('Best time to visit Hampi') }}">{{ _('Best time to visit Hampi') }}</button>
+        <button type="button" class="chip" data-ask="{{ _('How to reach Hampi?') }}">{{ _('How to reach Hampi?') }}</button>
+        <button type="button" class="chip" data-ask="{{ _('Plan a 3 day trip to Coorg from Bangalore') }}">{{ _('Plan a 3 day trip to Coorg from Bangalore') }}</button>
+        <button type="button" class="chip" data-ask="{{ _('Top waterfalls') }}">{{ _('Top waterfalls') }}</button>
+      </div>
+      <div class="chat-input">
+        <form class="chat-form" autocomplete="off">
+          <input class="chat-text" value="{{ prefill }}" placeholder="{{ _('Type your message...') }}" aria-label="{{ _('Type your message...') }}">
+          <button type="button" class="mic-btn" data-mic title="{{ _('Speak') }}"><i data-lucide="mic"></i></button>
+          <button class="send-btn" aria-label="{{ _('Send') }}"><i data-lucide="send"></i></button>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const chat = new YS.ChatWidget(document.getElementById("assistant-chat"), { sessionKey: "ys_assistant_chat", sessionId: {{ resume|tojson }} });
+  chat.restore().then(() => {
+    const prefill = {{ prefill|tojson }};
+    if (prefill) chat.send(prefill);
+  });
+  document.querySelectorAll("[data-ask-global]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); chat.send(a.getAttribute("data-ask-global")); }));
+  document.querySelector("[data-new-chat-global]").addEventListener("click", () => chat.reset());
+});
+</script>
+{% endblock %}

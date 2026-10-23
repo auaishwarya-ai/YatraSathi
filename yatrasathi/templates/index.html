@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% from 'partials/macros.html' import place_card, place_img with context %}
+{% block content %}
+<section class="hero">
+  {% if hero and place_image(hero) %}<img class="hero-bg" src="{{ place_image(hero) }}" alt="Hampi">
+  {% else %}<img class="hero-bg" src="{{ placeholder('Heritage') }}" data-wiki="Vittala Temple" data-name="Hampi Stone Chariot" alt="Hampi">{% endif %}
+  <div class="container">
+    <div>
+      <h1>{{ _('Discover') }}<br>{{ _('Incredible Karnataka') }}<br>{{ _('with') }} <span>YatraSathi</span></h1>
+      <p class="lead">{{ _('Your intelligent travel companion that speaks your language and helps you explore the best of Karnataka.') }}</p>
+      <form class="hero-search" action="{{ url_for('main.explore') }}" method="get" style="position:relative">
+        <i data-lucide="search" class="search-ic"></i>
+        <input class="input" name="q" placeholder="{{ _('Search destinations, places, attractions...') }}" aria-label="{{ _('Search') }}">
+        <button class="btn btn-primary">{{ _('Search') }}</button>
+      </form>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('main.assistant') }}"><i data-lucide="bot"></i>{{ _('Chat with AI Assistant') }}</a>
+        <a class="btn btn-glass btn-lg" href="{{ url_for('main.planner') }}"><i data-lucide="calendar-days"></i>{{ _('Plan Your Trip') }}</a>
+      </div>
+    </div>
+    <div class="ai-card">
+      <div class="row" style="align-items:flex-start">
+        <div class="bot-face"><img src="{{ url_for('static', filename='images/bot.svg') }}" alt=""></div>
+        <div><b>{{ _("Hi! I'm your") }} <span style="color:var(--primary)">{{ _('AI Assistant') }}</span></b>
+          <div class="small muted">{{ _('Ask me anything about Karnataka.') }}</div></div>
+      </div>
+      <a href="{{ url_for('main.assistant') }}" class="btn btn-primary btn-sm" style="align-self:center">{{ _('Chat Now') }}</a>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <section class="section">
+    <div class="section-head"><h2>{{ _('Popular Destinations') }}</h2><a class="link-sm" href="{{ url_for('main.explore') }}">{{ _('View all') }} <i data-lucide="arrow-right"></i></a></div>
+    <div class="carousel-wrap">
+      <div class="carousel" id="popular">
+        {% for d in popular %}{{ place_card(d, saved, compact=True) }}{% endfor %}
+      </div>
+      <button class="icon-btn carousel-next" onclick="document.getElementById('popular').scrollBy({left: 400, behavior: 'smooth'})" aria-label="Next"><i data-lucide="chevron-right"></i></button>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>{{ _('Explore by Categories') }}</h2></div>
+    <div class="cat-grid">
+      {% for cat, count in categories %}
+      <a class="cat-tile" href="{{ url_for('main.explore', category=cat) }}"><i data-lucide="{{ CATEGORY_ICONS[cat] }}"></i>{{ cat|category }}<span class="count">{{ count }} {{ _('places') }}</span></a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>{{ _('Featured Itineraries') }}</h2><a class="link-sm" href="{{ url_for('main.planner') }}">{{ _('View all') }} <i data-lucide="arrow-right"></i></a></div>
+    <div class="feat-grid">
+      {% for f in featured %}
+      <a class="feat-card" href="{{ url_for('main.planner', preset=f.key) }}">
+        {{ place_img(f.image, 'thumb') }}
+        <div class="flex-1" style="display:flex;flex-direction:column">
+          <b>{{ f['title_' + lang] if lang != 'en' else f.title }}</b>
+          <span class="small muted">{{ f.days }} {{ _('Days') }} / {{ f.nights }} {{ _('Nights') }}</span>
+          <span class="price">{{ _('From') }} <b>₹{{ f.price_from|money }}</b> / {{ _('person') }}</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="card features-strip">
+    <div class="f"><div class="ic"><i data-lucide="sparkles"></i></div><div><b>{{ _('AI Powered Recommendations') }}</b><span>{{ _('Personalized for you') }}</span></div></div>
+    <div class="f"><div class="ic"><i data-lucide="wallet"></i></div><div><b>{{ _('Budget Optimized Plans') }}</b><span>{{ _('Know your costs upfront') }}</span></div></div>
+    <div class="f"><div class="ic"><i data-lucide="book-open-check"></i></div><div><b>{{ _('Verified Information') }}</b><span>{{ _('RAG-based answers') }}</span></div></div>
+    <div class="f"><div class="ic"><i data-lucide="languages"></i></div><div><b>{{ _('Multi-language Support') }}</b><span>English, ಕನ್ನಡ, हिंदी</span></div></div>
+    <div class="f"><div class="ic"><i data-lucide="mic"></i></div><div><b>{{ _('Text & Voice') }}</b><span>{{ _('Speak or type your questions') }}</span></div></div>
+  </section>
+</div>
+{% endblock %}

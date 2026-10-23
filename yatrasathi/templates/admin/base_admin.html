@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block body_class %}admin-body{% endblock %}
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+<div class="admin-shell">
+  <aside class="admin-side">
+    <a class="brand" href="{{ url_for('admin.dashboard') }}">
+      <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="" style="filter:drop-shadow(0 0 0 #fff)">
+      <div><div class="brand-name">YatraSathi</div><div class="brand-sub">{{ _('Admin Panel') }}</div></div>
+    </a>
+    <div class="grp">{{ _('Main') }}</div>
+    <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if active == 'dashboard' }}"><i data-lucide="layout-dashboard"></i>{{ _('Dashboard') }}</a>
+    <a href="{{ url_for('admin.destinations') }}" class="{{ 'active' if active == 'destinations' }}"><i data-lucide="map-pin"></i>{{ _('Destinations') }}</a>
+    <a href="{{ url_for('admin.knowledge') }}" class="{{ 'active' if active == 'knowledge' }}"><i data-lucide="brain-circuit"></i>{{ _('AI Knowledge Base') }}</a>
+    <a href="{{ url_for('admin.itineraries') }}" class="{{ 'active' if active == 'itineraries' }}"><i data-lucide="map"></i>{{ _('Itineraries') }}</a>
+    <a href="{{ url_for('admin.users') }}" class="{{ 'active' if active == 'users' }}"><i data-lucide="users"></i>{{ _('Users') }}</a>
+    <a href="{{ url_for('admin.chats') }}" class="{{ 'active' if active == 'chats' }}"><i data-lucide="messages-square"></i>{{ _('Chat Sessions') }}</a>
+    <a href="{{ url_for('admin.feedback') }}" class="{{ 'active' if active == 'feedback' }}"><i data-lucide="star"></i>{{ _('Reviews & Feedback') }}</a>
+    <a href="{{ url_for('admin.reports') }}" class="{{ 'active' if active == 'reports' }}"><i data-lucide="bar-chart-3"></i>{{ _('Analytics & Reports') }}</a>
+    <div class="grp">{{ _('Website') }}</div>
+    <a href="{{ url_for('main.index') }}"><i data-lucide="globe"></i>{{ _('View Website') }}</a>
+    <a href="{{ url_for('main.planner') }}"><i data-lucide="calendar-plus"></i>{{ _('AI Planner') }}</a>
+    <div class="grp">{{ _('Support') }}</div>
+    <a href="{{ url_for('main.help_page') }}"><i data-lucide="circle-help"></i>{{ _('Help & Support') }}</a>
+    <a href="{{ url_for('auth.logout') }}"><i data-lucide="log-out"></i>{{ _('Log Out') }}</a>
+  </aside>
+  <main class="admin-main">
+    <header class="admin-top">
+      <button class="icon-btn side-toggle" aria-label="Menu"><i data-lucide="menu"></i></button>
+      <h1>{% block page_title %}{{ _('Admin Dashboard') }}{% endblock %}</h1>
+      <div style="margin-left:auto" class="row">
+        <div class="lang-switch">
+          <a href="{{ url_for('main.set_language', code='en') }}" class="{{ 'active' if lang == 'en' }}"><i data-lucide="globe"></i><span class="lang-label">English</span></a>
+          <a href="{{ url_for('main.set_language', code='kn') }}" class="{{ 'active' if lang == 'kn' }}">ಕನ್ನಡ</a>
+          <a href="{{ url_for('main.set_language', code='hi') }}" class="{{ 'active' if lang == 'hi' }}">हिंदी</a>
+        </div>
+        <a class="icon-btn" href="{{ url_for('admin.feedback') }}" title="{{ _('Feedback') }}"><i data-lucide="bell"></i></a>
+        <div class="row" style="gap:8px"><div class="avatar">{{ current_user.initials }}</div><div class="small"><b>{{ current_user.name }}</b><div class="xs muted">{{ _('Super Admin') }}</div></div></div>
+      </div>
+    </header>
+    <div class="admin-content">
+      {% block admin_content %}{% endblock %}
+    </div>
+  </main>
+</div>
+{% endblock %}

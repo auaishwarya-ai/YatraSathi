@@ -1,0 +1,151 @@
+{
+  "sections": [
+    {
+      "slug": "about", "icon": "landmark",
+      "title": "About Karnataka", "title_kn": "ಕರ್ನಾಟಕದ ಬಗ್ಗೆ", "title_hi": "कर्नाटक के बारे में",
+      "summary": "Karnataka is a land of diverse landscapes, rich history, vibrant culture and warm hospitality.",
+      "summary_kn": "ಕರ್ನಾಟಕ ವೈವಿಧ್ಯಮಯ ಭೂದೃಶ್ಯಗಳು, ಶ್ರೀಮಂತ ಇತಿಹಾಸ, ರೋಮಾಂಚಕ ಸಂಸ್ಕೃತಿ ಮತ್ತು ಆತ್ಮೀಯ ಆತಿಥ್ಯದ ನಾಡು.",
+      "summary_hi": "कर्नाटक विविध परिदृश्यों, समृद्ध इतिहास, जीवंत संस्कृति और आत्मीय आतिथ्य की भूमि है।",
+      "content": [
+        {"heading": "Overview", "text": "Karnataka is a state in south-western India with Bengaluru as its capital. It was formed on 1 November 1956 as Mysore State and renamed Karnataka in 1973; 1 November is celebrated as Kannada Rajyotsava. The state has 31 districts and Kannada is the official language. Its tourism tagline is 'One State. Many Worlds.'"},
+        {"heading": "Geography", "text": "Karnataka has three broad regions: the coastal strip (Karavali) along the Arabian Sea, the hilly Western Ghats (Malnad) covered in rainforests and coffee estates, and the Deccan plateau (Bayaluseeme) in the north and east. Major rivers include the Kaveri, Krishna, Tungabhadra, Sharavathi and Kali."},
+        {"heading": "UNESCO World Heritage", "text": "Karnataka has three cultural UNESCO World Heritage Sites: the Group of Monuments at Hampi, the Group of Monuments at Pattadakal, and the Sacred Ensembles of the Hoysalas (Belur, Halebidu and Somanathapura). Large parts of the Western Ghats natural World Heritage Site also lie in Karnataka."},
+        {"heading": "History", "text": "Great dynasties ruled Karnataka: the Kadambas, Gangas, Chalukyas of Badami, Rashtrakutas, Hoysalas, the Vijayanagara Empire, the Bahmani and Adil Shahi sultanates, and the Wadiyars of Mysore. Each left temples, forts and palaces that make Karnataka one of India's richest heritage states."}
+      ]
+    },
+    {
+      "slug": "festivals", "icon": "calendar-days",
+      "title": "Festivals", "title_kn": "ಹಬ್ಬಗಳು", "title_hi": "त्योहार",
+      "summary": "Experience the vibrant festivals of Karnataka.",
+      "summary_kn": "ಕರ್ನಾಟಕದ ವರ್ಣರಂಜಿತ ಹಬ್ಬಗಳನ್ನು ಅನುಭವಿಸಿ.",
+      "summary_hi": "कर्नाटक के रंगीन त्योहारों का अनुभव करें।",
+      "content": [
+        {"heading": "Mysuru Dasara (September - October)", "text": "The state festival of Karnataka, celebrated for ten days with the illuminated Mysore Palace, cultural programmes, a food festival and the grand Jamboo Savari procession where an elephant carries the golden howdah with goddess Chamundeshwari."},
+        {"heading": "Hampi Utsav (January - March)", "text": "A cultural festival held against the ruins of Hampi with music, dance, puppet shows, light and sound shows and processions recreating the grandeur of the Vijayanagara Empire."},
+        {"heading": "Kambala (November - March)", "text": "A traditional buffalo race held in slushy paddy fields of Dakshina Kannada and Udupi districts. Pairs of buffaloes race with a farmer running behind them."},
+        {"heading": "Bengaluru Karaga (March - April)", "text": "One of the oldest festivals of Bengaluru, centred on the Dharmaraya Swamy Temple. A priest carries the flower-decked Karaga on his head through the old city at night."},
+        {"heading": "Ugadi and Makara Sankranti", "text": "Ugadi (March - April) is the Kannada New Year, marked with bevu-bella (neem and jaggery) symbolising life's bitter and sweet moments. On Sankranti (January) families share ellu-bella (sesame, jaggery and groundnut)."},
+        {"heading": "Puttari (Huthri) in Kodagu", "text": "The Kodava harvest festival held in November - December, when the first paddy is ceremonially cut, accompanied by traditional Kodava dances."},
+        {"heading": "Kadalekai Parishe", "text": "The groundnut fair held in November - December around the Bull Temple in Basavanagudi, Bengaluru, where farmers offer their first groundnut harvest."},
+        {"heading": "Pattadakal Dance Festival", "text": "A classical dance festival held every January with the Chalukyan temples of Pattadakal as the backdrop."}
+      ]
+    },
+    {
+      "slug": "cuisine", "icon": "soup",
+      "title": "Local Cuisine", "title_kn": "ಸ್ಥಳೀಯ ಆಹಾರ", "title_hi": "स्थानीय व्यंजन",
+      "summary": "Relish the authentic flavors of Karnataka.",
+      "summary_kn": "ಕರ್ನಾಟಕದ ಅಸಲಿ ರುಚಿಗಳನ್ನು ಸವಿಯಿರಿ.",
+      "summary_hi": "कर्नाटक के असली स्वादों का आनंद लें।",
+      "content": [
+        {"heading": "Old Mysuru region", "text": "Try Mysore masala dosa, Mylari dosa, bisi bele bath, ragi mudde with saaru, Maddur vade and the iconic Mysore Pak sweet. South Karnataka filter coffee is a must."},
+        {"heading": "Coastal Karnataka (Udupi and Mangaluru)", "text": "Udupi is the home of the masala dosa and simple vegetarian meals. Mangaluru is famous for neer dosa, kori rotti, chicken ghee roast, fish curry, kane (lady fish) fry, Mangalore buns, goli baje and the gadbad ice cream."},
+        {"heading": "Kodagu (Coorg)", "text": "Kodava cuisine features pandi curry (pork curry with kachampuli vinegar), kadambuttu (rice balls), akki otti (rice rotis), bamboo shoot curry and Coorg coffee."},
+        {"heading": "North Karnataka", "text": "Hearty meals of jolada rotti (jowar flatbread) with ennegai (stuffed brinjal), shenga chutney, girmit and mirchi bajji. Sweets include Dharwad pedha, Belagavi kunda, Gokak karadantu and shenga holige."},
+        {"heading": "Malnad region", "text": "In Chikkamagaluru, Shivamogga and Hassan try akki rotti, kotte kadubu (idlis steamed in jackfruit leaves), patrode and fresh estate coffee."},
+        {"heading": "Food tips", "text": "Most temples serve free prasada meals. Darshinis (self-service eateries) in Bengaluru and Mysuru offer cheap, clean breakfast. Meals on banana leaves are eaten with the right hand."}
+      ]
+    },
+    {
+      "slug": "culture", "icon": "landmark",
+      "title": "Culture & Heritage", "title_kn": "ಸಂಸ್ಕೃತಿ ಮತ್ತು ಪರಂಪರೆ", "title_hi": "संस्कृति और विरासत",
+      "summary": "Discover our rich traditions, art and heritage.",
+      "summary_kn": "ನಮ್ಮ ಶ್ರೀಮಂತ ಸಂಪ್ರದಾಯ, ಕಲೆ ಮತ್ತು ಪರಂಪರೆಯನ್ನು ಅನ್ವೇಷಿಸಿ.",
+      "summary_hi": "हमारी समृद्ध परंपराओं, कला और विरासत को जानें।",
+      "content": [
+        {"heading": "Performing arts", "text": "Yakshagana is a vibrant night-long dance drama of coastal Karnataka with elaborate costumes and headgear. Dollu Kunitha is a powerful drum dance, and Karnataka has a strong tradition of both Carnatic and Hindustani classical music, especially in Dharwad."},
+        {"heading": "Crafts", "text": "Famous crafts include Mysore silk sarees, Ilkal sarees, Channapatna lacquered wooden toys, Bidriware metal inlay from Bidar, Mysore paintings with gold leaf, sandalwood carvings and Kinnal toys."},
+        {"heading": "Literature and language", "text": "Kannada is one of the classical languages of India with over 2,000 years of history. Kannada writers have won eight Jnanpith Awards, the joint highest for any Indian language."},
+        {"heading": "Temple etiquette", "text": "Remove footwear before entering temples, dress modestly covering shoulders and knees, avoid photography inside sanctums and follow local customs such as dhoti-only entry for men in some coastal temples."}
+      ]
+    },
+    {
+      "slug": "transportation", "icon": "bus",
+      "title": "Transportation", "title_kn": "ಸಾರಿಗೆ", "title_hi": "परिवहन",
+      "summary": "Find the best ways to travel across Karnataka.",
+      "summary_kn": "ಕರ್ನಾಟಕದಾದ್ಯಂತ ಪ್ರಯಾಣಿಸಲು ಉತ್ತಮ ಮಾರ್ಗಗಳನ್ನು ತಿಳಿಯಿರಿ.",
+      "summary_hi": "पूरे कर्नाटक में यात्रा के बेहतरीन तरीके जानें।",
+      "content": [
+        {"heading": "By air", "text": "Kempegowda International Airport (Bengaluru) is the main gateway. Mangaluru has an international airport, and domestic airports serve Mysuru, Hubballi, Belagavi, Kalaburagi, Shivamogga, Bidar and Vijayapura."},
+        {"heading": "By rail", "text": "Bengaluru, Mysuru, Hubballi and Mangaluru are major rail hubs. Fast trains such as Vande Bharat and Shatabdi connect Bengaluru with Mysuru, Hubballi and Dharwad. The Konkan Railway runs along the coast through Udupi, Murudeshwar, Gokarna Road and Karwar."},
+        {"heading": "By bus", "text": "KSRTC runs one of India's best bus networks, from ordinary and express buses to Rajahamsa, Airavat (Volvo AC) and Ambaari sleeper coaches. Book online on the KSRTC website. Under the Shakti scheme, women residents of Karnataka travel free on non-premium state buses."},
+        {"heading": "Within cities", "text": "Bengaluru has Namma Metro and BMTC buses; autos and app cabs are available in all major towns. For hill stations and remote heritage sites, hiring a taxi for the day is usually the most convenient option."},
+        {"heading": "Approximate costs", "text": "KSRTC ordinary buses cost about Rs 1.2 - 1.6 per km per person, AC buses about Rs 2 - 2.5 per km. Outstation taxis charge roughly Rs 12 - 16 per km for a sedan, plus a driver allowance."}
+      ]
+    },
+    {
+      "slug": "weather", "icon": "cloud-sun",
+      "title": "Weather", "title_kn": "ಹವಾಮಾನ", "title_hi": "मौसम",
+      "summary": "Check weather patterns and the best time to visit.",
+      "summary_kn": "ಹವಾಮಾನ ಮತ್ತು ಭೇಟಿ ನೀಡಲು ಉತ್ತಮ ಸಮಯ ತಿಳಿಯಿರಿ.",
+      "summary_hi": "मौसम और घूमने का सबसे अच्छा समय जानें।",
+      "content": [
+        {"heading": "Winter (October - February)", "text": "The best season for most of Karnataka, with pleasant days of 20 - 30 degrees Celsius. Ideal for heritage sites like Hampi, Badami and Bijapur and for beaches and hill stations."},
+        {"heading": "Summer (March - May)", "text": "Northern Karnataka gets very hot (up to 40 degrees Celsius). Hill stations such as Coorg, Chikmagalur and Nandi Hills stay cooler, and this is a good season for wildlife sightings at Kabini and Bandipur."},
+        {"heading": "Monsoon (June - September)", "text": "The coast and Western Ghats receive heavy rain - Agumbe is one of the wettest places in India. Waterfalls such as Jog Falls are at their best, but beaches are rough and some treks and safaris close."},
+        {"heading": "What to pack", "text": "Light cottons for the plains, a light jacket for hill stations, rain gear and leech socks in the monsoon, and comfortable walking shoes for heritage sites."}
+      ]
+    },
+    {
+      "slug": "safety", "icon": "shield-check",
+      "title": "Safety Tips", "title_kn": "ಸುರಕ್ಷತಾ ಸಲಹೆಗಳು", "title_hi": "सुरक्षा सुझाव",
+      "summary": "Travel safe with our essential safety tips.",
+      "summary_kn": "ನಮ್ಮ ಅಗತ್ಯ ಸುರಕ್ಷತಾ ಸಲಹೆಗಳೊಂದಿಗೆ ಸುರಕ್ಷಿತವಾಗಿ ಪ್ರಯಾಣಿಸಿ.",
+      "summary_hi": "हमारे ज़रूरी सुरक्षा सुझावों के साथ सुरक्षित यात्रा करें।",
+      "content": [
+        {"heading": "General safety", "text": "Karnataka is generally safe for tourists. Keep digital copies of ID, use registered taxis or app cabs at night, and keep valuables in hotel lockers. Dial 112 for any emergency."},
+        {"heading": "Beaches and waterfalls", "text": "Swim only in lifeguard-marked zones. Never venture near waterfall edges or slippery rocks in the monsoon - many accidents happen while taking selfies. Follow red-flag warnings on beaches."},
+        {"heading": "Forests and wildlife", "text": "Enter forests only through official safaris or with permits. Do not feed animals, stay inside vehicles, keep noise low and avoid bright clothing. Ghat roads like Agumbe and Charmadi are best driven in daylight."},
+        {"heading": "Women travellers", "text": "Share your live location with family, prefer well-reviewed stays and use the women helpline 1091 or the KSP Suraksha app in case of trouble."},
+        {"heading": "Health", "text": "Drink bottled or filtered water, carry mosquito repellent in the Malnad and coastal regions, and keep basic medicines. Ambulance service is available on 108."}
+      ]
+    },
+    {
+      "slug": "essentials", "icon": "luggage",
+      "title": "Travel Essentials", "title_kn": "ಪ್ರಯಾಣದ ಅಗತ್ಯಗಳು", "title_hi": "यात्रा ज़रूरी बातें",
+      "summary": "Everything you need to know before you travel.",
+      "summary_kn": "ಪ್ರಯಾಣಕ್ಕೂ ಮುನ್ನ ತಿಳಿಯಬೇಕಾದ ಎಲ್ಲವೂ.",
+      "summary_hi": "यात्रा से पहले जानने योग्य सब कुछ।",
+      "content": [
+        {"heading": "Documents", "text": "Carry a government photo ID (Aadhaar, driving licence or passport). Foreign nationals need their passport and visa; some forest areas require permits booked online in advance."},
+        {"heading": "Money", "text": "UPI payments are accepted almost everywhere, even at small shops. Keep some cash for remote villages, temple offerings and forest check posts."},
+        {"heading": "Connectivity", "text": "Mobile networks work in towns, but coverage is weak in deep forests, ghat sections and parts of Kodagu. Download offline maps and keep a power bank."},
+        {"heading": "Language", "text": "Kannada is widely spoken; English and Hindi are understood in cities and tourist areas. Simple Kannada words: Namaskara (hello), Dhanyavadagalu (thank you), Eshtu (how much?)."}
+      ]
+    }
+  ],
+  "faqs": [
+    {"q": "What is the best time to visit Karnataka?", "a": "October to February is the best time for most destinations. The monsoon (July - September) is ideal for waterfalls such as Jog Falls, while summer suits hill stations and wildlife safaris.",
+     "q_kn": "ಕರ್ನಾಟಕಕ್ಕೆ ಭೇಟಿ ನೀಡಲು ಉತ್ತಮ ಸಮಯ ಯಾವುದು?", "a_kn": "ಹೆಚ್ಚಿನ ತಾಣಗಳಿಗೆ ಅಕ್ಟೋಬರ್‌ನಿಂದ ಫೆಬ್ರವರಿ ಉತ್ತಮ ಸಮಯ. ಜಲಪಾತಗಳಿಗೆ ಮಳೆಗಾಲ (ಜುಲೈ - ಸೆಪ್ಟೆಂಬರ್) ಸೂಕ್ತ.",
+     "q_hi": "कर्नाटक घूमने का सबसे अच्छा समय कौन सा है?", "a_hi": "अधिकांश स्थलों के लिए अक्टूबर से फ़रवरी सबसे अच्छा समय है। झरनों के लिए मानसून (जुलाई - सितंबर) आदर्श है।"},
+    {"q": "Is it safe to travel in Karnataka?", "a": "Yes, Karnataka is considered safe for tourists. Follow normal precautions, respect warnings at beaches and waterfalls, and dial 112 in any emergency.",
+     "q_kn": "ಕರ್ನಾಟಕದಲ್ಲಿ ಪ್ರಯಾಣ ಸುರಕ್ಷಿತವೇ?", "a_kn": "ಹೌದು, ಕರ್ನಾಟಕ ಪ್ರವಾಸಿಗರಿಗೆ ಸುರಕ್ಷಿತ. ಸಾಮಾನ್ಯ ಎಚ್ಚರಿಕೆ ವಹಿಸಿ ಮತ್ತು ತುರ್ತು ಸಂದರ್ಭದಲ್ಲಿ 112 ಕರೆ ಮಾಡಿ.",
+     "q_hi": "क्या कर्नाटक में यात्रा सुरक्षित है?", "a_hi": "हाँ, कर्नाटक पर्यटकों के लिए सुरक्षित है। सामान्य सावधानियाँ रखें और आपात स्थिति में 112 डायल करें।"},
+    {"q": "Do I need a permit to visit certain places?", "a": "Most places need no permit. Treks such as Kudremukh and Kumara Parvatha, and some forest areas, require permits booked online through the Karnataka Forest Department or Aranya Vihaara portal.",
+     "q_kn": "ಕೆಲವು ಸ್ಥಳಗಳಿಗೆ ಅನುಮತಿ ಬೇಕೇ?", "a_kn": "ಹೆಚ್ಚಿನ ಸ್ಥಳಗಳಿಗೆ ಅನುಮತಿ ಬೇಕಿಲ್ಲ. ಕುದುರೆಮುಖದಂತಹ ಚಾರಣಗಳಿಗೆ ಅರಣ್ಯ ಇಲಾಖೆಯ ಆನ್‌ಲೈನ್ ಅನುಮತಿ ಅಗತ್ಯ.",
+     "q_hi": "क्या कुछ जगहों के लिए परमिट चाहिए?", "a_hi": "अधिकांश जगहों के लिए परमिट नहीं चाहिए। कुद्रेमुख जैसे ट्रेक के लिए वन विभाग से ऑनलाइन परमिट लेना होता है।"},
+    {"q": "How can I reach remote places in Karnataka?", "a": "KSRTC buses reach almost every town. For remote waterfalls, forests and heritage sites, hire a local taxi or jeep from the nearest town.",
+     "q_kn": "ಕರ್ನಾಟಕದ ದೂರದ ಸ್ಥಳಗಳನ್ನು ಹೇಗೆ ತಲುಪುವುದು?", "a_kn": "ಕೆಎಸ್‌ಆರ್‌ಟಿಸಿ ಬಸ್ಸುಗಳು ಬಹುತೇಕ ಎಲ್ಲಾ ಪಟ್ಟಣಗಳಿಗೆ ಹೋಗುತ್ತವೆ. ದೂರದ ಸ್ಥಳಗಳಿಗೆ ಹತ್ತಿರದ ಪಟ್ಟಣದಿಂದ ಟ್ಯಾಕ್ಸಿ ಅಥವಾ ಜೀಪ್ ಪಡೆಯಿರಿ.",
+     "q_hi": "कर्नाटक की दूरदराज़ जगहों तक कैसे पहुँचें?", "a_hi": "केएसआरटीसी बसें लगभग हर शहर तक जाती हैं। दूरदराज़ जगहों के लिए नज़दीकी शहर से टैक्सी या जीप लें।"},
+    {"q": "What is YatraSathi?", "a": "YatraSathi is an AI travel companion for Karnataka that recommends destinations, generates budget-friendly itineraries and answers travel questions in English, Kannada and Hindi using text or voice.",
+     "q_kn": "ಯಾತ್ರಾಸಾಥಿ ಎಂದರೇನು?", "a_kn": "ಯಾತ್ರಾಸಾಥಿ ಕರ್ನಾಟಕಕ್ಕಾಗಿ ಎಐ ಪ್ರವಾಸ ಸಹಾಯಕ; ತಾಣಗಳನ್ನು ಶಿಫಾರಸು ಮಾಡುತ್ತದೆ, ಬಜೆಟ್ ಪ್ರವಾಸ ಯೋಜನೆ ರೂಪಿಸುತ್ತದೆ ಮತ್ತು ಮೂರು ಭಾಷೆಗಳಲ್ಲಿ ಉತ್ತರಿಸುತ್ತದೆ.",
+     "q_hi": "यात्रासाथी क्या है?", "a_hi": "यात्रासाथी कर्नाटक के लिए एआई यात्रा साथी है जो स्थल सुझाता है, बजट यात्रा योजना बनाता है और तीन भाषाओं में जवाब देता है।"},
+    {"q": "How can I plan my trip?", "a": "Open the AI Planner, choose your starting city, destination (or leave it to the AI), number of days, travellers, budget and interests, then click Generate Itinerary. You can also simply type a request like 'Suggest places for 2 days within Rs 5000' in the chat.",
+     "q_kn": "ನನ್ನ ಪ್ರವಾಸವನ್ನು ಹೇಗೆ ಯೋಜಿಸುವುದು?", "a_kn": "ಎಐ ಪ್ಲಾನರ್ ತೆರೆಯಿರಿ, ಆರಂಭಿಕ ಸ್ಥಳ, ದಿನಗಳು, ಬಜೆಟ್ ಮತ್ತು ಆಸಕ್ತಿಗಳನ್ನು ಆರಿಸಿ 'ಪ್ರವಾಸ ಯೋಜನೆ ರಚಿಸಿ' ಒತ್ತಿರಿ.",
+     "q_hi": "मैं अपनी यात्रा कैसे प्लान करूँ?", "a_hi": "एआई प्लानर खोलें, शुरुआती शहर, दिन, बजट और रुचियाँ चुनें और 'यात्रा योजना बनाएँ' दबाएँ।"},
+    {"q": "Is YatraSathi free to use?", "a": "Yes. All features including the AI assistant, trip planner and saved trips are free.",
+     "q_kn": "ಯಾತ್ರಾಸಾಥಿ ಉಚಿತವೇ?", "a_kn": "ಹೌದು. ಎಐ ಸಹಾಯಕ, ಪ್ರವಾಸ ಯೋಜಕ ಸೇರಿದಂತೆ ಎಲ್ಲಾ ಸೌಲಭ್ಯಗಳು ಉಚಿತ.",
+     "q_hi": "क्या यात्रासाथी मुफ़्त है?", "a_hi": "हाँ। एआई सहायक और ट्रिप प्लानर सहित सभी सुविधाएँ मुफ़्त हैं।"},
+    {"q": "Are the costs shown exact?", "a": "No. Costs are estimates based on typical bus/taxi fares, stay categories and food expenses. Always confirm current prices, timings and entry fees before travelling.",
+     "q_kn": "ತೋರಿಸಿದ ವೆಚ್ಚಗಳು ನಿಖರವೇ?", "a_kn": "ಇಲ್ಲ. ವೆಚ್ಚಗಳು ಅಂದಾಜು ಮಾತ್ರ. ಪ್ರಯಾಣಕ್ಕೂ ಮುನ್ನ ಪ್ರಸ್ತುತ ದರಗಳನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.",
+     "q_hi": "क्या दिखाई गई लागत सटीक है?", "a_hi": "नहीं। लागत अनुमानित है। यात्रा से पहले मौजूदा दरें ज़रूर जाँच लें।"}
+  ],
+  "emergency": [
+    {"key": "all_in_one", "name": "All-in-one Emergency", "name_kn": "ತುರ್ತು ಸಹಾಯವಾಣಿ", "name_hi": "आपातकालीन सेवा", "number": "112", "icon": "siren"},
+    {"key": "police", "name": "Police", "name_kn": "ಪೊಲೀಸ್", "name_hi": "पुलिस", "number": "100", "icon": "shield"},
+    {"key": "ambulance", "name": "Ambulance", "name_kn": "ಆಂಬ್ಯುಲೆನ್ಸ್", "name_hi": "एम्बुलेंस", "number": "108", "icon": "cross"},
+    {"key": "tourist", "name": "Tourist Helpline", "name_kn": "ಪ್ರವಾಸಿ ಸಹಾಯವಾಣಿ", "name_hi": "पर्यटक हेल्पलाइन", "number": "1363", "icon": "headphones"},
+    {"key": "women", "name": "Women Helpline", "name_kn": "ಮಹಿಳಾ ಸಹಾಯವಾಣಿ", "name_hi": "महिला हेल्पलाइन", "number": "1091", "icon": "user-round"},
+    {"key": "forest", "name": "Forest Helpline", "name_kn": "ಅರಣ್ಯ ಸಹಾಯವಾಣಿ", "name_hi": "वन हेल्पलाइन", "number": "1926", "icon": "trees"},
+    {"key": "fire", "name": "Fire", "name_kn": "ಅಗ್ನಿಶಾಮಕ", "name_hi": "फ़ायर ब्रिगेड", "number": "101", "icon": "flame"}
+  ]
+}

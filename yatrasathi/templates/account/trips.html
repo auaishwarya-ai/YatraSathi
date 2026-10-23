@@ -1,0 +1,33 @@
+{% extends 'account/base_account.html' %}
+{% from 'partials/macros.html' import status_pill, trip_image with context %}
+{% block title %}{{ _('My Trips') }} · YatraSathi{% endblock %}
+{% block account_content %}
+<section class="card">
+  <div class="card-head"><div><h2 class="mb-0">{{ _('My Trips') }}</h2><div class="small muted">{{ _('Manage your trips and itineraries') }}</div></div>
+    <a class="btn btn-primary" href="{{ url_for('main.planner') }}"><i data-lucide="plus"></i>{{ _('New Trip') }}</a></div>
+  <div class="card-body">
+    <div class="tabs mb-2">
+      <a href="{{ url_for('account.trips', tab='upcoming') }}" class="{{ 'active' if tab == 'upcoming' }}">{{ _('Upcoming Trips') }} ({{ counts.upcoming }})</a>
+      <a href="{{ url_for('account.trips', tab='saved') }}" class="{{ 'active' if tab == 'saved' }}">{{ _('Saved Itineraries') }} ({{ counts.saved }})</a>
+      <a href="{{ url_for('account.trips', tab='completed') }}" class="{{ 'active' if tab == 'completed' }}">{{ _('Completed Trips') }} ({{ counts.completed }})</a>
+    </div>
+    {% for t in trips %}
+    <div class="trip-row">
+      {{ trip_image(t) }}
+      <div class="info">
+        <a href="{{ url_for('account.trip_detail', trip_id=t.id) }}" style="color:inherit"><b>{{ t.title }}</b></a>
+        <div class="meta">{{ t.days }} {{ _('Days') }} · {{ t.travelers }} {{ _('People') }} · {{ _('from') }} {{ t.start_city }} · ₹{{ t.total_cost|money }}</div>
+        <div class="meta">{% if t.start_date %}{{ t.start_date|dt }} – {{ t.end_date|dt }}{% else %}{{ _('Dates not set') }}{% endif %}</div>
+      </div>
+      {{ status_pill(t.status) }}
+      <div class="row">
+        <a class="btn btn-light btn-sm" href="{{ url_for('account.trip_detail', trip_id=t.id) }}">{{ _('View') }}</a>
+        <a class="btn btn-light btn-sm" href="{{ url_for('account.trip_pdf', trip_id=t.id) }}" title="PDF"><i data-lucide="download"></i></a>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-state"><i data-lucide="luggage"></i><p>{{ _('No trips here yet.') }}</p><a class="btn btn-primary" href="{{ url_for('main.planner') }}">{{ _('Plan a trip with AI') }}</a></div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

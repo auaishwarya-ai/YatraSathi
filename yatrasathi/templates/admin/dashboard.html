@@ -1,0 +1,96 @@
+{% extends 'admin/base_admin.html' %}
+{% from 'partials/macros.html' import place_img, status_pill with context %}
+{% block title %}{{ _('Admin Dashboard') }} · YatraSathi{% endblock %}
+{% block admin_content %}
+<div class="row between wrap mb-2">
+  <div><h2 class="mb-0">{{ _('Welcome back') }}, {{ current_user.first_name }}!</h2><div class="muted">{{ _("Here's what's happening with YatraSathi.") }}</div></div>
+  <div class="card" style="padding:10px 16px" ><i data-lucide="calendar" style="vertical-align:-3px"></i> {{ date_range }}</div>
+</div>
+
+<div class="grid grid-4">
+  <div class="card kpi"><div class="ic ic-blue"><i data-lucide="map-pin"></i></div><div><div class="label">{{ _('Total Destinations') }}</div><div class="value">{{ stats.destinations }}</div><div class="trend">{% if stats.dest_new and stats.dest_new < stats.destinations %}<b>+{{ stats.dest_new }}</b> {{ _('added this month') }}{% else %}{{ _('Across 8 categories') }}{% endif %}</div></div></div>
+  <div class="card kpi"><div class="ic ic-green"><i data-lucide="users"></i></div><div><div class="label">{{ _('Total Users') }}</div><div class="value">{{ '{:,}'.format(stats.users) }}</div><div class="trend"><b class="{{ 'neg' if stats.users_growth < 0 }}">{{ '↑' if stats.users_growth >= 0 else '↓' }} {{ stats.users_growth|abs }}%</b> {{ _('vs last month') }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-purple"><i data-lucide="messages-square"></i></div><div><div class="label">{{ _('AI Chat Sessions') }}</div><div class="value">{{ '{:,}'.format(stats.chats) }}</div><div class="trend"><b class="{{ 'neg' if stats.chats_growth < 0 }}">{{ '↑' if stats.chats_growth >= 0 else '↓' }} {{ stats.chats_growth|abs }}%</b> {{ _('vs last month') }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-amber"><i data-lucide="download"></i></div><div><div class="label">{{ _('Itineraries Generated') }}</div><div class="value">{{ '{:,}'.format(stats.itineraries) }}</div><div class="trend"><b class="{{ 'neg' if stats.itineraries_growth < 0 }}">{{ '↑' if stats.itineraries_growth >= 0 else '↓' }} {{ stats.itineraries_growth|abs }}%</b> {{ _('vs last month') }}</div></div></div>
+</div>
+
+<div class="admin-grid-3 mt-2">
+  <div class="card">
+    <div class="card-head"><h3>{{ _('Overview Analytics') }}</h3><span class="pill grey">{{ _('Last 30 days') }}</span></div>
+    <div class="legend"><span><i style="background:#2f49d1"></i>{{ _('Users') }}</span><span><i style="background:#16a34a"></i>{{ _('Chat Sessions') }}</span><span><i style="background:#7c3aed"></i>{{ _('Itineraries') }}</span></div>
+    <div class="chart-box"><canvas id="overview"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>{{ _('Top Destinations') }}</h3><a class="link-sm" href="{{ url_for('admin.destinations') }}">{{ _('View All') }}</a></div>
+    <div class="rank-list">
+      <div class="r xs muted bold"><span style="width:22px"></span><span class="flex-1">{{ _('Destination') }}</span><span>{{ _('Views') }}</span></div>
+      {% for d in top %}
+      <div class="r"><span class="num">{{ loop.index }}</span>{{ place_img(d, '') }}<div class="flex-1"><b>{{ d.name }}</b><div class="xs muted">{{ d.district }}</div></div><span>{{ '{:,}'.format(d.views) }}</span></div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>{{ _('Recent Itineraries') }}</h3><a class="link-sm" href="{{ url_for('admin.itineraries') }}">{{ _('View All') }}</a></div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>{{ _('User') }}</th><th>{{ _('Trip') }}</th><th>{{ _('Date') }}</th><th>{{ _('Status') }}</th></tr></thead>
+      <tbody>{% for t in recent_trips %}<tr><td><i data-lucide="user" style="width:14px;height:14px;vertical-align:-2px"></i> {{ t.user.name if t.user else 'Guest' }}</td><td><a href="{{ url_for('account.trip_detail', trip_id=t.id) }}">{{ t.title }}</a></td><td class="nowrap">{{ t.created_at|dt }}</td><td>{{ status_pill(t.status) }}</td></tr>{% endfor %}</tbody>
+    </table></div>
+  </div>
+</div>
+
+<div class="admin-grid-3 mt-2" style="grid-template-columns:1fr 1fr 1fr">
+  <div class="card">
+    <div class="card-head"><h3>{{ _('AI Chat Usage by Language') }}</h3></div>
+    <div class="row card-body" style="gap:20px">
+      <div style="width:150px;height:150px"><canvas id="langs"></canvas></div>
+      <div class="flex-1">{% for l in languages %}<div class="row between small" style="padding:6px 0"><span><i class="legend" style="display:inline-block;width:10px;height:10px;border-radius:50%;padding:0;background:{{ ['#3b82f6', '#22c55e', '#8b5cf6'][loop.index0] }}"></i> {{ l.label }}</span><b>{{ l.pct }}%</b></div>{% endfor %}</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>{{ _('User Registrations') }}</h3><a class="link-sm" href="{{ url_for('admin.users') }}">{{ _('View Report') }}</a></div>
+    <div class="row card-body" style="align-items:flex-end">
+      <div><div class="value" style="font-size:1.6rem;font-weight:700">{{ '{:,}'.format(stats.users) }}</div><div class="small muted">{{ _('Total Users') }}</div></div>
+      <div class="flex-1" style="height:170px"><canvas id="regs"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>{{ _('Recent Feedback') }}</h3><a class="link-sm" href="{{ url_for('admin.feedback') }}">{{ _('View All') }}</a></div>
+    {% for f in feedback %}
+    <div class="fb-item"><div class="face {{ f.sentiment }}">{{ {'positive': '😊', 'neutral': '😐', 'negative': '☹️'}[f.sentiment] }}</div>
+      <div class="flex-1"><div class="small">{{ f.message }}</div><div class="row between xs muted"><span>– {{ f.name }}</span><span>{{ f.created_at|dt }}</span></div></div></div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card card-body mt-2">
+  <h3>{{ _('Quick Actions') }}</h3>
+  <div class="quick-actions">
+    <a href="{{ url_for('admin.destination_form') }}"><i data-lucide="map-pin-plus"></i>{{ _('Add Destination') }}</a>
+    <a href="{{ url_for('admin.knowledge') }}"><i data-lucide="file-plus"></i>{{ _('Add Knowledge') }}</a>
+    <form method="post" action="{{ url_for('admin.knowledge_rebuild') }}" class="inline-form"><button class="btn btn-light" style="padding:12px 18px"><i data-lucide="refresh-ccw" style="color:var(--primary)"></i>{{ _('Update AI Data') }}</button></form>
+    <a href="{{ url_for('main.planner') }}"><i data-lucide="map"></i>{{ _('Create Itinerary') }}</a>
+    <a href="{{ url_for('admin.users') }}"><i data-lucide="users"></i>{{ _('Manage Users') }}</a>
+    <a href="{{ url_for('admin.reports') }}"><i data-lucide="bar-chart-3"></i>{{ _('View Reports') }}</a>
+  </div>
+</div>
+<p class="center xs muted mt-2">© {{ now.year }} YatraSathi. {{ _('All rights reserved.') }}</p>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/chart.umd.min.js') }}"></script>
+<script>
+const chart = {{ chart|safe }};
+Chart.defaults.font.family = "Inter, system-ui, sans-serif";
+Chart.defaults.color = "#64748b";
+const ds = (label, data, color) => ({ label, data, borderColor: color, backgroundColor: color + "22", fill: true, tension: .35, pointRadius: 2, borderWidth: 2 });
+new Chart(document.getElementById("overview"), { type: "line",
+  data: { labels: chart.labels, datasets: [ds(YS.t("Users"), chart.users, "#2f49d1"), ds(YS.t("Chat Sessions"), chart.chats, "#16a34a"), ds(YS.t("Itineraries"), chart.itineraries, "#7c3aed")] },
+  options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 6 } }, y: { beginAtZero: true, grid: { color: "#eef0f6" } } } } });
+new Chart(document.getElementById("langs"), { type: "doughnut",
+  data: { labels: ["English", "ಕನ್ನಡ", "हिंदी"], datasets: [{ data: {{ lang_chart|safe }}, backgroundColor: ["#3b82f6", "#22c55e", "#8b5cf6"], borderWidth: 0 }] },
+  options: { cutout: "62%", plugins: { legend: { display: false } } } });
+const weeks = {{ weeks_json|safe }};
+new Chart(document.getElementById("regs"), { type: "bar",
+  data: { labels: weeks.map((w) => w.label), datasets: [{ data: weeks.map((w) => w.count), backgroundColor: "#2f3fc7", borderRadius: 4, maxBarThickness: 28 }] },
+  options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { precision: 0 } } } } });
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+[
+  {"name": "Bangalore", "aliases": ["bengaluru", "bangalore", "blr", "ಬೆಂಗಳೂರು", "बेंगलुरु", "बैंगलोर"], "name_kn": "ಬೆಂಗಳೂರು", "name_hi": "बेंगलुरु", "lat": 12.9716, "lng": 77.5946},
+  {"name": "Mysuru", "aliases": ["mysuru", "mysore", "ಮೈಸೂರು", "मैसूर", "मैसूरु"], "name_kn": "ಮೈಸೂರು", "name_hi": "मैसूरु", "lat": 12.2958, "lng": 76.6394},
+  {"name": "Mangaluru", "aliases": ["mangaluru", "mangalore", "ಮಂಗಳೂರು", "मंगलुरु", "मैंगलोर"], "name_kn": "ಮಂಗಳೂರು", "name_hi": "मंगलुरु", "lat": 12.9141, "lng": 74.8560},
+  {"name": "Hubballi", "aliases": ["hubballi", "hubli", "ಹುಬ್ಬಳ್ಳಿ", "हुबली"], "name_kn": "ಹುಬ್ಬಳ್ಳಿ", "name_hi": "हुबली", "lat": 15.3647, "lng": 75.1240},
+  {"name": "Belagavi", "aliases": ["belagavi", "belgaum", "ಬೆಳಗಾವಿ", "बेलगावी", "बेलगाम"], "name_kn": "ಬೆಳಗಾವಿ", "name_hi": "बेलगावी", "lat": 15.8497, "lng": 74.4977},
+  {"name": "Kalaburagi", "aliases": ["kalaburagi", "gulbarga", "ಕಲಬುರಗಿ", "कलबुर्गी", "गुलबर्गा"], "name_kn": "ಕಲಬುರಗಿ", "name_hi": "कलबुर्गी", "lat": 17.3297, "lng": 76.8343},
+  {"name": "Shivamogga", "aliases": ["shivamogga", "shimoga", "ಶಿವಮೊಗ್ಗ", "शिवमोग्गा"], "name_kn": "ಶಿವಮೊಗ್ಗ", "name_hi": "शिवमोग्गा", "lat": 13.9299, "lng": 75.5681},
+  {"name": "Hassan", "aliases": ["hassan", "ಹಾಸನ", "हासन"], "name_kn": "ಹಾಸನ", "name_hi": "हासन", "lat": 13.0072, "lng": 76.0962},
+  {"name": "Udupi", "aliases": ["udupi", "ಉಡುಪಿ", "उडुपी"], "name_kn": "ಉಡುಪಿ", "name_hi": "उडुपी", "lat": 13.3409, "lng": 74.7421},
+  {"name": "Davanagere", "aliases": ["davanagere", "davangere", "ದಾವಣಗೆರೆ", "दावणगेरे"], "name_kn": "ದಾವಣಗೆರೆ", "name_hi": "दावणगेरे", "lat": 14.4644, "lng": 75.9218},
+  {"name": "Vijayapura", "aliases": ["vijayapura", "bijapur", "ವಿಜಯಪುರ", "विजयपुरा", "बीजापुर"], "name_kn": "ವಿಜಯಪುರ", "name_hi": "विजयपुरा", "lat": 16.8302, "lng": 75.7100},
+  {"name": "Ballari", "aliases": ["ballari", "bellary", "ಬಳ್ಳಾರಿ", "बल्लारी"], "name_kn": "ಬಳ್ಳಾರಿ", "name_hi": "बल्लारी", "lat": 15.1394, "lng": 76.9214},
+  {"name": "Tumakuru", "aliases": ["tumakuru", "tumkur", "ತುಮಕೂರು", "तुमकुरु"], "name_kn": "ತುಮಕೂರು", "name_hi": "तुमकुरु", "lat": 13.3379, "lng": 77.1173}
+]

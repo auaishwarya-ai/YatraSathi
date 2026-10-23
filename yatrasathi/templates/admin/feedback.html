@@ -1,0 +1,36 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}{{ _('Reviews & Feedback') }} · Admin{% endblock %}
+{% block page_title %}{{ _('Reviews & Feedback') }}{% endblock %}
+{% block admin_content %}
+<div class="grid grid-4 mb-2">
+  <div class="card kpi"><div class="ic ic-green">😊</div><div><div class="label">{{ _('Positive') }}</div><div class="value">{{ sentiments.get('positive', 0) }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-amber">😐</div><div><div class="label">{{ _('Neutral') }}</div><div class="value">{{ sentiments.get('neutral', 0) }}</div></div></div>
+  <div class="card kpi"><div class="ic" style="background:#fde2e2">☹️</div><div><div class="label">{{ _('Negative') }}</div><div class="value">{{ sentiments.get('negative', 0) }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-blue"><i data-lucide="brain"></i></div><div><div class="label">{{ _('Sentiment analysis') }}</div><div class="small muted">{{ _('Automatic, lexicon-based (EN/KN/HI)') }}</div></div></div>
+</div>
+<div class="toolbar">
+  <div class="tabs" style="border:0">
+    <a href="{{ url_for('admin.feedback') }}" class="{{ 'active' if not kind }}">{{ _('All') }}</a>
+    <a href="{{ url_for('admin.feedback', kind='review') }}" class="{{ 'active' if kind == 'review' }}">{{ _('Place reviews') }}</a>
+    <a href="{{ url_for('admin.feedback', kind='feedback') }}" class="{{ 'active' if kind == 'feedback' }}">{{ _('Feedback') }}</a>
+    <a href="{{ url_for('admin.feedback', kind='support') }}" class="{{ 'active' if kind == 'support' }}">{{ _('Support requests') }}</a>
+  </div>
+  <a class="btn btn-light" style="margin-left:auto" href="{{ url_for('admin.export_csv', kind='feedback') }}"><i data-lucide="file-down"></i>{{ _('Export CSV') }}</a>
+</div>
+<div class="card">
+  {% for f in items %}
+  <div class="fb-item" style="{{ 'opacity:.55' if f.resolved }}">
+    <div class="face {{ f.sentiment }}">{{ {'positive': '😊', 'neutral': '😐', 'negative': '☹️'}[f.sentiment] }}</div>
+    <div class="flex-1">
+      <div class="row wrap" style="gap:8px"><b>{{ f.name }}</b><span class="pill grey">{{ f.kind }}</span>{% if f.destination %}<a class="pill" href="{{ url_for('main.place', slug=f.destination.slug) }}">{{ f.destination.name }}</a>{% endif %}<span class="stars">{% for i in range(f.rating or 0) %}★{% endfor %}</span>{% if f.resolved %}<span class="pill green">{{ _('Resolved') }}</span>{% endif %}</div>
+      <p class="small mb-0 mt-1">{{ f.message }}</p>
+      <div class="xs muted">{{ f.email }} · {{ f.created_at|dt('%d %b %Y, %H:%M') }}</div>
+    </div>
+    <div class="nowrap">
+      <form class="inline-form" method="post" action="{{ url_for('admin.feedback_action', fid=f.id, action='resolve') }}"><button class="btn btn-light btn-sm" title="{{ _('Mark resolved') }}"><i data-lucide="check"></i></button></form>
+      <form class="inline-form" method="post" action="{{ url_for('admin.feedback_action', fid=f.id, action='delete') }}" data-confirm="{{ _('Delete this item?') }}"><button class="btn btn-danger btn-sm"><i data-lucide="trash-2"></i></button></form>
+    </div>
+  </div>
+  {% else %}<div class="empty-state">{{ _('Nothing here yet.') }}</div>{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}{{ _('Analytics & Reports') }} · Admin{% endblock %}
+{% block page_title %}{{ _('Analytics & Reports') }}{% endblock %}
+{% block admin_content %}
+<div class="grid grid-4">
+  <div class="card kpi"><div class="ic ic-amber"><i data-lucide="map"></i></div><div><div class="label">{{ _('Total itineraries') }}</div><div class="value">{{ total_trips }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-green"><i data-lucide="indian-rupee"></i></div><div><div class="label">{{ _('Average trip cost') }}</div><div class="value">₹{{ avg_cost|money }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-blue"><i data-lucide="calendar-days"></i></div><div><div class="label">{{ _('Average trip length') }}</div><div class="value">{{ avg_days }} {{ _('days') }}</div></div></div>
+  <div class="card kpi"><div class="ic ic-purple"><i data-lucide="star"></i></div><div><div class="label">{{ _('Average feedback rating') }}</div><div class="value">{{ avg_rating }}/5</div></div></div>
+</div>
+<div class="grid grid-2 mt-2">
+  <div class="card"><div class="card-head"><h3>{{ _('Most planned destinations') }}</h3></div><div class="chart-box"><canvas id="dest"></canvas></div></div>
+  <div class="card"><div class="card-head"><h3>{{ _('Chat intents (what travellers ask)') }}</h3></div><div class="chart-box"><canvas id="intents"></canvas></div></div>
+  <div class="card"><div class="card-head"><h3>{{ _('Travel style preference') }}</h3></div><div class="chart-box"><canvas id="styles"></canvas></div></div>
+  <div class="card"><div class="card-head"><h3>{{ _('Views by category') }}</h3></div><div class="chart-box"><canvas id="cats"></canvas></div></div>
+</div>
+<div class="card card-body mt-2">
+  <h3>{{ _('Download reports (CSV)') }}</h3>
+  <div class="quick-actions">
+    {% for k, label in [('users', 'Users'), ('itineraries', 'Itineraries'), ('feedback', 'Reviews & Feedback'), ('destinations', 'Destinations')] %}
+    <a href="{{ url_for('admin.export_csv', kind=k) }}"><i data-lucide="file-spreadsheet"></i>{{ _(label) }}</a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/chart.umd.min.js') }}"></script>
+<script>
+const opts = { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { precision: 0 } } } };
+const bar = (id, labels, data, color, horizontal) => new Chart(document.getElementById(id), { type: "bar",
+  data: { labels, datasets: [{ data, backgroundColor: color, borderRadius: 4, maxBarThickness: 34 }] }, options: Object.assign({}, opts, horizontal ? { indexAxis: "y" } : {}) });
+bar("dest", {{ by_dest|map(attribute=0)|list|tojson }}, {{ by_dest|map(attribute=1)|list|tojson }}, "#3b36d1", true);
+bar("intents", {{ intents|map(attribute=0)|list|tojson }}, {{ intents|map(attribute=1)|list|tojson }}, "#16a34a", true);
+new Chart(document.getElementById("styles"), { type: "doughnut", data: { labels: {{ by_style.keys()|list|tojson }}, datasets: [{ data: {{ by_style.values()|list|tojson }}, backgroundColor: ["#3b82f6", "#22c55e", "#f59e0b", "#8b5cf6"] }] }, options: { maintainAspectRatio: false, cutout: "60%" } });
+bar("cats", {{ cat_views.keys()|list|tojson }}, {{ cat_views.values()|list|tojson }}, "#7c3aed", false);
+</script>
+{% endblock %}

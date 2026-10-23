@@ -1,0 +1,31 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}{{ _('Users') }} · Admin{% endblock %}
+{% block page_title %}{{ _('Users') }}{% endblock %}
+{% block admin_content %}
+<div class="toolbar">
+  <form class="row" method="get"><input class="input" style="width:280px" name="q" value="{{ q }}" placeholder="{{ _('Search name or email') }}"><button class="btn btn-light"><i data-lucide="search"></i>{{ _('Search') }}</button></form>
+  <a class="btn btn-light" style="margin-left:auto" href="{{ url_for('admin.export_csv', kind='users') }}"><i data-lucide="file-down"></i>{{ _('Export CSV') }}</a>
+</div>
+<div class="card table-wrap">
+  <table class="table">
+    <thead><tr><th>{{ _('User') }}</th><th>{{ _('Role') }}</th><th>{{ _('Language') }}</th><th>{{ _('Home city') }}</th><th>{{ _('Interests') }}</th><th>{{ _('Trips') }}</th><th>{{ _('Joined') }}</th><th>{{ _('Status') }}</th><th></th></tr></thead>
+    <tbody>
+    {% for u in items %}
+    <tr>
+      <td><div class="row" style="gap:10px"><div class="avatar" style="width:34px;height:34px;font-size:.75rem">{{ u.initials }}</div><div><b>{{ u.name }}</b><div class="xs muted">{{ u.email }}</div></div></div></td>
+      <td>{% if u.is_admin %}<span class="pill purple">Admin</span>{% else %}<span class="pill grey">User</span>{% endif %}</td>
+      <td>{{ {'en': 'English', 'kn': 'ಕನ್ನಡ', 'hi': 'हिंदी'}.get(u.language, u.language) }}</td>
+      <td>{{ u.home_city }}</td><td class="small">{{ u.interests_list|join(', ') }}</td>
+      <td>{{ trip_counts.get(u.id, 0) }}</td><td class="nowrap">{{ u.created_at|dt }}</td>
+      <td>{% if u.active %}<span class="pill green">{{ _('Active') }}</span>{% else %}<span class="pill red">{{ _('Inactive') }}</span>{% endif %}</td>
+      <td class="nowrap">{% if u.id != current_user.id %}
+        <form class="inline-form" method="post" action="{{ url_for('admin.user_action', user_id=u.id, action='toggle') }}"><button class="btn btn-light btn-sm" title="{{ _('Activate / deactivate') }}"><i data-lucide="{{ 'user-x' if u.active else 'user-check' }}"></i></button></form>
+        <form class="inline-form" method="post" action="{{ url_for('admin.user_action', user_id=u.id, action='role') }}"><button class="btn btn-light btn-sm" title="{{ _('Toggle admin role') }}"><i data-lucide="shield"></i></button></form>
+        <form class="inline-form" method="post" action="{{ url_for('admin.user_action', user_id=u.id, action='delete') }}" data-confirm="{{ _('Delete this user and their data?') }}"><button class="btn btn-danger btn-sm" title="{{ _('Delete') }}"><i data-lucide="trash-2"></i></button></form>
+      {% else %}<span class="xs muted">{{ _('You') }}</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

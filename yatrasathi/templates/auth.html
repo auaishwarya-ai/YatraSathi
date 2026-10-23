@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{{ _('Login') if mode == 'login' else _('Create Account') }} · YatraSathi{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-side">
+    <img src="{{ placeholder('Hill Stations') }}" data-wiki="Kodagu district" data-name="Coorg" alt="">
+    <div class="txt"><h2>{{ _('Plan smart. Travel better.') }}</h2><p>{{ _('Personalised itineraries, budget estimates and a multilingual AI guide for Karnataka.') }}</p></div>
+  </div>
+  <div class="auth-form">
+    <div class="card">
+      <a class="brand mb-2" href="{{ url_for('main.index') }}"><img src="{{ url_for('static', filename='images/logo.svg') }}" alt=""><div class="brand-name">YatraSathi</div></a>
+      {% if mode == 'login' %}
+      <h2>{{ _('Welcome back!') }}</h2>
+      <p class="muted small">{{ _('Log in to save trips, places and your chat history.') }}</p>
+      <form method="post">
+        <div class="field"><label class="lbl" for="email">{{ _('Email') }}</label><input class="input" type="email" id="email" name="email" required autofocus></div>
+        <div class="field"><label class="lbl" for="password">{{ _('Password') }}</label><input class="input" type="password" id="password" name="password" required></div>
+        <label class="check mb-2"><input type="checkbox" name="remember" value="1"> {{ _('Remember me') }}</label>
+        <button class="btn btn-primary btn-block btn-lg">{{ _('Login') }}</button>
+      </form>
+      <p class="small center mt-2">{{ _("Don't have an account?") }} <a href="{{ url_for('auth.register') }}">{{ _('Create Account') }}</a></p>
+      <div class="demo-box"><b>{{ _('Demo accounts') }}</b><br>{{ _('Traveller') }}: aishwarya@yatrasathi.in / user123<br>{{ _('Admin') }}: admin@yatrasathi.in / admin123</div>
+      {% else %}
+      <h2>{{ _('Create Account') }}</h2>
+      <p class="muted small">{{ _('Join YatraSathi to get personalised recommendations.') }}</p>
+      <form method="post">
+        <div class="field"><label class="lbl" for="name">{{ _('Full name') }}</label><input class="input" id="name" name="name" required></div>
+        <div class="field"><label class="lbl" for="email">{{ _('Email') }}</label><input class="input" type="email" id="email" name="email" required></div>
+        <div class="field"><label class="lbl" for="password">{{ _('Password') }}</label><input class="input" type="password" id="password" name="password" minlength="6" required></div>
+        <div class="field"><label class="lbl" for="home_city">{{ _('Home city') }}</label>
+          <select class="select" id="home_city" name="home_city">{% for c in ['Bangalore', 'Mysuru', 'Mangaluru', 'Hubballi', 'Belagavi', 'Kalaburagi', 'Shivamogga', 'Udupi'] %}<option>{{ c }}</option>{% endfor %}</select></div>
+        <div class="field"><span class="lbl">{{ _('Travel Interests') }}</span>
+          <div class="row wrap">{% for i in ['Nature', 'Heritage', 'Adventure', 'Spiritual', 'Wildlife', 'Beaches'] %}<label class="chip"><input type="checkbox" name="interests" value="{{ i }}"> {{ _(i) }}</label>{% endfor %}</div></div>
+        <button class="btn btn-primary btn-block btn-lg">{{ _('Create Account') }}</button>
+      </form>
+      <p class="small center mt-2">{{ _('Already have an account?') }} <a href="{{ url_for('auth.login') }}">{{ _('Login') }}</a></p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% from 'partials/macros.html' import status_pill, place_img with context %}
+{% block title %}{{ trip.title }} · YatraSathi{% endblock %}
+{% block content %}
+<div class="container page" style="max-width:1100px">
+  <div class="row between wrap mb-2 no-print">
+    <a href="{{ url_for('account.trips') if current_user.is_authenticated else url_for('main.planner') }}" class="link-sm"><i data-lucide="arrow-left"></i>{{ _('Back') }}</a>
+    <div class="row wrap">
+      <a class="btn btn-primary" href="{{ url_for('account.trip_pdf', trip_id=trip.id) }}"><i data-lucide="download"></i>{{ _('Download Itinerary (PDF)') }}</a>
+      <button class="btn btn-light" onclick="window.print()"><i data-lucide="printer"></i>{{ _('Print') }}</button>
+      <button class="btn btn-light" data-speak="#plan-text"><i data-lucide="volume-2"></i>{{ _('Listen') }}</button>
+    </div>
+  </div>
+  <div class="card">
+    {% if trip.destination %}<div style="height:220px;overflow:hidden;border-radius:14px 14px 0 0">{{ place_img(trip.destination, '') }}</div>{% endif %}
+    <div class="card-body">
+      <div class="row between wrap">
+        <div><h1 class="mb-0">{{ trip.title }}</h1>
+          <div class="muted">{{ plan.start_label or trip.start_city }} → {{ plan.destination.display_name if plan.destination else '' }} · {{ trip.days }} {{ _('Days') }} · {{ trip.travelers }} {{ _('People') }} · {{ _(trip.style|capitalize) }}</div></div>
+        {{ status_pill(trip.status) }}
+      </div>
+
+      {% if current_user.is_authenticated and (trip.user_id == current_user.id or trip.user_id is none) %}
+      <div class="card card-body mt-2 no-print" style="background:#fafbff">
+        {% if trip.user_id is none %}
+        <button class="btn btn-primary" id="claim"><i data-lucide="bookmark"></i>{{ _('Save to My Trips') }}</button>
+        {% else %}
+        <form method="post" action="{{ url_for('account.trip_update', trip_id=trip.id) }}" class="row wrap">
+          <label class="lbl mb-0">{{ _('Start date') }}</label>
+          <input class="input" style="width:auto" type="date" name="start_date" value="{{ trip.start_date.isoformat() if trip.start_date else '' }}">
+          <select class="select" style="width:auto" name="status">
+            {% for s in ['saved', 'upcoming', 'completed', 'cancelled'] %}<option value="{{ s }}" {{ 'selected' if trip.status == s }}>{{ _(s|capitalize) }}</option>{% endfor %}
+          </select>
+          <button class="btn btn-outline btn-sm">{{ _('Update') }}</button>
+        </form>
+        <form method="post" action="{{ url_for('account.trip_delete', trip_id=trip.id) }}" data-confirm="{{ _('Delete this trip?') }}" class="mt-1">
+          <button class="btn btn-danger btn-sm"><i data-lucide="trash-2"></i>{{ _('Delete trip') }}</button>
+        </form>
+        {% endif %}
+      </div>
+      {% elif not current_user.is_authenticated %}
+      <p class="small mt-2 no-print"><a href="{{ url_for('auth.login', next=request.path) }}">{{ _('Log in') }}</a> {{ _('to save this trip to My Trips.') }}</p>
+      {% endif %}
+
+      <div class="grid mt-2" style="grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)" id="trip-grid">
+        <div id="plan-text">
+          {% for day in plan.day_plans %}
+          <div class="it-day" style="grid-template-columns:64px 26px minmax(0,1fr)">
+            <div class="day-badge"><small>{{ _('Day') }}</small><b>{{ day.day }}</b></div>
+            <div class="timeline"><i></i></div>
+            <div><h4>{{ day.title }}</h4><div class="it-meta"><i data-lucide="route"></i>{{ day.subtitle }}</div>
+              <ul class="it-stops">
+                {% for s in day.stops %}<li class="{{ 'stay' if s.kind == 'stay' }}"><span class="tm">{{ s.time }}</span><span>{% if s.slug %}<a href="{{ url_for('main.place', slug=s.slug) }}">{{ s.name }}</a>{% else %}{{ s.name }}{% endif %}{% if s.fee %} <span class="xs muted">(₹{{ s.fee }})</span>{% endif %}</span></li>{% endfor %}
+              </ul></div>
+          </div>
+          {% endfor %}
+        </div>
+        <div>
+          <div class="cost-card">
+            <div class="small muted">{{ _('Estimated Trip Cost') }}</div>
+            <div class="big">₹{{ plan.costs.total|money }}</div>
+            <div class="xs muted">₹{{ plan.costs.per_person|money }} {{ _('per person') }} · {{ plan.total_km }} km</div>
+            <div class="mt-2">
+              <div class="cost-row"><span>{{ _('Transport') }}</span><b>₹{{ plan.costs.transport|money }}</b></div>
+              <div class="cost-row"><span>{{ _('Local travel') }}</span><b>₹{{ plan.costs.local_transport|money }}</b></div>
+              <div class="cost-row"><span>{{ _('Stay') }} ({{ plan.costs.nights }} {{ _('nights') }})</span><b>₹{{ plan.costs.accommodation|money }}</b></div>
+              <div class="cost-row"><span>{{ _('Food') }}</span><b>₹{{ plan.costs.food|money }}</b></div>
+              <div class="cost-row"><span>{{ _('Entry fees') }}</span><b>₹{{ plan.costs.entry_fees|money }}</b></div>
+              <div class="cost-row"><span>{{ _('Misc (5%)') }}</span><b>₹{{ plan.costs.misc|money }}</b></div>
+            </div>
+            {% if plan.budget %}<div class="budget-banner {{ plan.budget_status }} mt-2">{{ _('Budget') }}: ₹{{ plan.budget|money }} · {{ _({'within': 'Within budget', 'optimized': 'Optimised to fit budget', 'over': 'Above budget'}.get(plan.budget_status, '')) }}</div>{% endif %}
+          </div>
+          <div class="card card-body mt-2">
+            <b>{{ _('Stay') }}</b><p class="small mb-1">{{ _(plan.stay.type) }} · ~₹{{ plan.stay.rate|money }}/{{ _('night') }} · {{ plan.stay.rooms }} {{ _('rooms') }}</p>
+            <b>{{ _('Transport') }}</b><p class="small mb-1">{{ _({'bus': 'Bus', 'car': 'Cab / Car', 'train': 'Train'}[plan.transport]) }}</p>
+            {% if plan.tips %}<b>{{ _('Travel Tips') }}</b><p class="small mb-0">{{ plan.tips }}</p>{% endif %}
+          </div>
+          {% if plan.destination %}<a class="btn btn-outline btn-block mt-2 no-print" href="{{ url_for('main.assistant', q=_('Tell me the story of') + ' ' + plan.destination.name) }}"><i data-lucide="bot"></i>{{ _('Ask AI about this trip') }}</a>{% endif %}
+        </div>
+      </div>
+      <p class="xs muted mt-2">{{ _('Costs are estimates - please confirm current prices before travelling.') }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const claim = document.getElementById("claim");
+if (claim) claim.addEventListener("click", async () => {
+  const r = await YS.post("/api/trips/{{ trip.id }}/save", {});
+  if (r.ok) { YS.toast(YS.t("Trip saved to My Trips"), "success"); setTimeout(() => location.reload(), 700); }
+});
+</script>
+{% endblock %}
